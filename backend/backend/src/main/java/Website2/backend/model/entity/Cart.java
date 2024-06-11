@@ -16,6 +16,7 @@ public class Cart {
     @Column(name = "total")
     private int total;
     @Column(name = "cart_detail")
-    private String cartDetail;
+    private CartDetail cartDetail;
+
 
 }

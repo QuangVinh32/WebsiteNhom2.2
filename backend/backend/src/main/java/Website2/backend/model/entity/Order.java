@@ -19,8 +19,9 @@ public class Order {
     @Column(name = "sale_date")
     private Date saleDate;
     @Column(name = "status")
-    private orderStatus status;
+    private OrderStatus status;
     @Column(name = "note")
     private String note;
+    private OrderDetail orderDetail;
 
 }
