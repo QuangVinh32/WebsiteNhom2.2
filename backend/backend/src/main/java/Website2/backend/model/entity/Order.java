@@ -1,9 +1,14 @@
 package Website2.backend.model.entity;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.util.Date;
+import java.util.List;
+
 @Entity
-@Table(name = "order")
+@Table(name = "`order`")
 @Data
 public class Order {
     @Id
@@ -23,4 +28,11 @@ public class Order {
     @Column(name = "note")
     private String note;
 
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Users users;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetails;
 }

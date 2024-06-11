@@ -1,13 +1,15 @@
 package Website2.backend.model.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-
+import lombok.NoArgsConstructor;
 import java.util.Date;
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "token")
+@Table(name = "`token`")
 public class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +25,3 @@ public class Token {
     @Column(name = "expiration")
     private Date expiration;
 }
-
