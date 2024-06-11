@@ -3,8 +3,6 @@ package Website2.backend.model.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Table(name = "product")
 @Data
 @Entity
@@ -29,23 +27,6 @@ public class Product {
     private productStatus status;
     @Column(name = "lo_luong_ton_kho")
     private int soLuongTonKho;
-    @OneToOne
-    @JoinColumn(name = "type_id")
-    private Type type;
-    @OneToOne
-    @JoinColumn(name = "nsx_id")
-    private Nsx nsx;
-    @OneToMany
-    @JoinColumn(name = "reviews_id")
-    private List<Reviews> reviews;
-    @OneToMany
-    @JoinColumn(name = "orderdetail_id")
-    private List<OrderDetail> orderDetail;
-    @OneToMany
-    @JoinColumn(name = "cartdetail_id")
-    private List<CartDetail> cartDetail;
-
-
 
     
 }

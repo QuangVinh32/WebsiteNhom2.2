@@ -8,6 +8,4 @@ import lombok.Data;
 @Table(name = "type")
 @Entity
 public class Type {
-    private int id;
-    private String name;
 }

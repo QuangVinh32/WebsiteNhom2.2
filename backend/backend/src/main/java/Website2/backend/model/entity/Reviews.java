@@ -12,7 +12,7 @@ public class Reviews {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int productId;
+    private int accountId;
     private String content;
     private int rate;
-    private Users users;
 }

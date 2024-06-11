@@ -1,5 +1,8 @@
 package Website2.backend.model.entity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
@@ -14,8 +17,5 @@ public class OrderDetail {
     private int orderId;
     @Column(name = "count")
     private int count;
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
 
 }
