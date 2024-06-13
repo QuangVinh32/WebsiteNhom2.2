@@ -15,7 +15,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "productId")
-    private Long productId; // Changed type to Long for compatibility with IDENTITY strategy
+    private int productId; // Changed type to Long for compatibility with IDENTITY strategy
 
     @Column(name = "productCode", nullable = false, unique = true)
     private int productCode;
@@ -48,13 +48,11 @@ public class Product {
     // Đúng
     @ManyToOne
     @JoinColumn(name = "nsxId")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Nsx nsx;
 
     // Đúng
     @ManyToOne
     @JoinColumn(name = "typeId")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Type type;
 
     // Đúng
