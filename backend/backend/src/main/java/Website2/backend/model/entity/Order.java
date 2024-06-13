@@ -13,26 +13,27 @@ import java.util.List;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id")
+    @Column(name = "orderId")
     private int orderId;
     @Column(name = "total")
     private int total;
     @Column(name = "address")
     private String address;
-    @Column(name = "order_date")
+    @Column(name = "orderDate")
     private Date orderDate;
-    @Column(name = "sale_date")
+    @Column(name = "saleDate")
     private Date saleDate;
     @Column(name = "status")
-    private orderStatus status;
+    private OrderStatus status;
     @Column(name = "note")
     private String note;
 
+    // Đúng
     @ManyToOne
     @JoinColumn(name = "userId")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Users users;
 
+    // Đúng
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetails;
 }

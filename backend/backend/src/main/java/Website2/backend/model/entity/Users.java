@@ -19,7 +19,7 @@ import java.util.List;
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "userId")
     private int userId;
 
     @Column(name = "username", nullable = false, unique = true, updatable = false)
@@ -43,6 +43,8 @@ public class Users {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Reviews> reviews;
+
+    // Getter and Setter methods for all fields
 
     public enum Role {
         ADMIN, MANAGER, USER, USER_NS

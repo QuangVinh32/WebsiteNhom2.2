@@ -11,10 +11,10 @@ import java.util.List;
 public class Type {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "type_id")
+    @Column(name = "typeId")
     private int typeId;
 
-    @Column(name = "type_name",nullable = false, unique = true)
+    @Column(name = "typeName",nullable = false, unique = true)
     private String typeName;
 
     @Column(name = "description")

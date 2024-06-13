@@ -5,15 +5,13 @@ import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.List;
-
 @Data
-@Table(name = "`reviews`")
 @Entity
+@Table(name = "reviews")
 public class Reviews {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+
+    @EmbeddedId
+    private ReviewPK reviewPK;
 
     @Column(name = "content")
     private String content;
@@ -21,12 +19,14 @@ public class Reviews {
     @Column(name = "rate")
     private int rate;
 
+    // Many-to-One mapping with User based on userId in ReviewPK
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userId", referencedColumnName = "userId", insertable = false, updatable = false)
     private Users user;
 
+    // Many-to-One mapping with Product based on productId in ReviewPK
     @ManyToOne
-    @JoinColumn(name = "reviews_id")
+    @JoinColumn(name = "productId", referencedColumnName = "productId", insertable = false, updatable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Product product;
 }

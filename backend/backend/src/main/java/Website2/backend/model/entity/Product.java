@@ -8,22 +8,22 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Table(name = "`product`")
 @Data
 @Entity
+@Table(name = "`product`")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
-    private int productId;
+    @Column(name = "productId")
+    private Long productId; // Changed type to Long for compatibility with IDENTITY strategy
 
-    @Column(name = "product_code",nullable = false,unique = true)
+    @Column(name = "productCode", nullable = false, unique = true)
     private int productCode;
 
-    @Column(name = "product_name",nullable = false)
+    @Column(name = "productName", nullable = false)
     private String nameProduct;
 
-    @Column(name = "product_description")
+    @Column(name = "productDescription")
     private String descriptionProduct;
 
     @Column(name = "price", nullable = false)
@@ -36,34 +36,36 @@ public class Product {
     private String image;
 
     @Column(name = "status", nullable = false)
-    private productStatus status;
+    @Enumerated(EnumType.STRING)
+    private ProductStatus status;
 
-    @Column(name = "create_time", nullable = false, updatable = false)
+    @Column(name = "creatTime", nullable = false, updatable = false)
     private LocalDateTime createdTime;
 
-    @Column(name = "so_luong_ton_kho", nullable = false)
+    @Column(name = "soLuongTonKho", nullable = false)
     private int soLuongTonKho;
 
+    // Đúng
     @ManyToOne
-    @JoinColumn(name = "nsx_id")
+    @JoinColumn(name = "nsxId")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Nsx nsx;
 
+    // Đúng
     @ManyToOne
-    @JoinColumn(name = "type_id")
+    @JoinColumn(name = "typeId")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Type type;
 
+    // Đúng
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Reviews> reviews;
 
-    @ManyToOne
-    @JoinColumn(name = "order_detail_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private OrderDetail orderDetail;
+    // Đúng
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetail;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_detail_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private CartDetail cartDetail;
+    // Đúng
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<CartDetail> cartDetails;
 }

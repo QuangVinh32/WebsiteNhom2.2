@@ -1,29 +1,29 @@
 package Website2.backend.model.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import java.util.List;
 
 @Data
 @Entity
 @Table(name = "`order_detail`")
 public class OrderDetail {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+
+    @EmbeddedId
+    private OrderDetailPK orderDetailPK;
 
     @Column(name = "count")
     private int count;
 
-    @OneToMany(mappedBy = "orderDetail", cascade = CascadeType.ALL)
-    private List<Product> products;
+    @ManyToOne
+    @JoinColumn(name = "productId", referencedColumnName = "productId", insertable = false, updatable = false)
+    private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "orderId", referencedColumnName = "orderId", insertable = false, updatable = false)
     private Order order;
 }

@@ -1,5 +1,5 @@
 package Website2.backend.model.entity;
 
-public enum productStatus {
+public enum ProductStatus {
     STOCKING,OUT_OF_STOCK
 }
