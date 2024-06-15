@@ -2,17 +2,17 @@ package Website2.backend.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Data
 @Table(name = "cart")
-public class Cart {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cartId")
-    private int cartId;
+public class Cart implements Serializable {
+    @EmbeddedId
+    private Cart.CartPK cartId;
 
     @Column(name = "total")
     private int total;
@@ -23,4 +23,17 @@ public class Cart {
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<CartDetail> cartDetails;
+
+    @Embeddable
+    @Data
+    @NoArgsConstructor
+    public static class CartPK implements Serializable {
+
+        @Column(name = "UserId")
+        private Integer UserId;
+
+        @Column(name = "ProductId")
+        private Integer ProductId;
+
+    }
 }

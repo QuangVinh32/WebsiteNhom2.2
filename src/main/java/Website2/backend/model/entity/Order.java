@@ -14,16 +14,22 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "orderId")
     private int orderId;
+
     @Column(name = "total")
     private int total;
+
     @Column(name = "address")
     private String address;
+
     @Column(name = "orderDate")
     private Date orderDate;
+
     @Column(name = "saleDate")
     private Date saleDate;
+
     @Column(name = "status")
     private OrderStatus status;
+
     @Column(name = "note")
     private String note;
 

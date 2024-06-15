@@ -3,10 +3,12 @@ package Website2.backend.service;
 
 import Website2.backend.model.entity.Users;
 import Website2.backend.model.request.UserRequest;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public interface IUserService {
 
     List<Users> getAllUser();

@@ -11,9 +11,12 @@ import java.util.List;
 public class Nsx {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(name = "description")
     private String description;
+
 
     // Đúng
     @OneToMany(mappedBy = "nsx", cascade = CascadeType.ALL)

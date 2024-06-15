@@ -19,7 +19,7 @@ public class Product {
     private int productCode;
 
     @Column(name = "productName", nullable = false)
-    private String nameProduct;
+    private String productName;
 
     @Column(name = "productDescription")
     private String descriptionProduct;
@@ -37,7 +37,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
-    @Column(name = "creatTime", nullable = false, updatable = false)
+    @Column(name = "createTime", nullable = false, updatable = false)
     private LocalDateTime createdTime;
 
     @Column(name = "soLuongTonKho", nullable = false)
