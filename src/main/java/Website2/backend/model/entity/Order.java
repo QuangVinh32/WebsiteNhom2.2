@@ -1,44 +1,26 @@
 package Website2.backend.model.entity;
-
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.util.Date;
-import java.util.List;
-
 @Entity
-@Table(name = "`order`")
+@Table(name = "order")
 @Data
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "orderId")
+    @Column(name = "order_id")
     private int orderId;
-
     @Column(name = "total")
     private int total;
-
     @Column(name = "address")
     private String address;
-
-    @Column(name = "orderDate")
+    @Column(name = "order_date")
     private Date orderDate;
-
-    @Column(name = "saleDate")
+    @Column(name = "sale_date")
     private Date saleDate;
-
     @Column(name = "status")
-    private OrderStatus status;
-
+    private orderStatus status;
     @Column(name = "note")
     private String note;
 
-    // Đúng
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    private Users users;
-
-
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderDetail> orderDetails;
 }
