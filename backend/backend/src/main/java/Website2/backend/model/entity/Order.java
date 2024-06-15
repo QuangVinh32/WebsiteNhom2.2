@@ -1,9 +1,6 @@
 package Website2.backend.model.entity;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +30,7 @@ public class Order {
     @JoinColumn(name = "userId")
     private Users users;
 
-    // Đúng
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetails;
 }

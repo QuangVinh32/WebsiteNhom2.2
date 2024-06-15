@@ -1,10 +1,6 @@
 package Website2.backend.model.entity;
-
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import java.time.LocalDateTime;
 import java.util.List;
 

@@ -1,5 +1,4 @@
 package Website2.backend.model.entity;
-
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
