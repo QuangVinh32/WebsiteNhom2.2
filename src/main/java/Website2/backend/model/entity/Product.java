@@ -1,7 +1,6 @@
 package Website2.backend.model.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
+import javax.persistence.*;import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;

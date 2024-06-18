@@ -1,6 +1,6 @@
 package Website2.backend.model.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,8 +43,6 @@ public class Users {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Reviews> reviews;
-
-    // Getter and Setter methods for all fields
 
     public enum Role {
         ADMIN, MANAGER, USER, USER_NS

@@ -1,9 +1,8 @@
 package Website2.backend.service.Class;
 
 import Website2.backend.model.entity.Nsx;
-import Website2.backend.model.entity.Order;
+
 import Website2.backend.model.request.CreateNsx;
-import Website2.backend.model.request.CreateOrder;
 import Website2.backend.model.request.UpdateNsx;
 import Website2.backend.repository.NsxRepository;
 import Website2.backend.service.INsxService;
@@ -33,8 +32,8 @@ public class NsxService implements INsxService {
 
     @Override
     public void createNsx(CreateNsx createNsx) throws Exception {
-        Optional<Nsx> existingProduct = nsxRepository.findById(createNsx.getId());
-        if (existingProduct.isEmpty()){
+        Optional<Nsx> existingNsx = nsxRepository.findById(createNsx.getId());
+        if (existingNsx.isEmpty()){
             throw new Exception("Không có sản phẩm nào thuộc nhà sản xuất");
         }
         Nsx nsxDb = modelMapper.map(createNsx, Nsx.class);
