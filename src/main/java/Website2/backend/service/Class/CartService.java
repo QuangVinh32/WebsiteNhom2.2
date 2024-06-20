@@ -36,7 +36,7 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public Cart updateCart(Integer id, UpdateCart updateCart) throws Exception {
+    public Cart updateCart(int id, UpdateCart updateCart) throws Exception {
         return null;
     }
 

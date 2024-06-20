@@ -27,12 +27,12 @@ public class TypeService implements ITypeService {
     }
 
     @Override
-    public Optional<Type> findByTypeId(Integer typeId) {
+    public Optional<Type> findByTypeId(int typeId) {
         return typeRepository.findById(typeId);
     }
 
     @Override
-    public Type updateType(Integer typeId, UpdateType updateType) throws Exception {
+    public Type updateType(int typeId, UpdateType updateType) throws Exception {
         Optional<Type> typeDb = findByTypeId(typeId);
         if(typeDb.isPresent()){
             Type existingType = typeDb.get();
@@ -54,7 +54,7 @@ public class TypeService implements ITypeService {
     }
 
     @Override
-    public void deleteByTypeId(Integer typeId) {
+    public void deleteByTypeId(int typeId) {
         typeRepository.deleteById(typeId);
     }
 

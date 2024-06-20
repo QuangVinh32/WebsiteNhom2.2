@@ -20,7 +20,7 @@ public interface ICartService {
 
     void createCart(CreateCart createCart) throws Exception;
 
-    Cart updateCart(Integer id, UpdateCart updateCart) throws Exception;
+    Cart updateCart(int id, UpdateCart updateCart) throws Exception;
 
     void deleteByCartId(int id);
 
