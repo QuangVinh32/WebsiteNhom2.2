@@ -44,6 +44,8 @@ public class Users {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Reviews> reviews;
 
+    // Getter and Setter methods for all fields
+
     public enum Role {
         ADMIN, MANAGER, USER, USER_NS
     }

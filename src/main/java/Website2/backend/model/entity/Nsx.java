@@ -15,6 +15,7 @@ public class Nsx {
     @Column(name = "description")
     private String description;
 
+    // Đúng
     @OneToMany(mappedBy = "nsx", cascade = CascadeType.ALL)
     private List<Product> products;
 

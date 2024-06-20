@@ -11,3 +11,5 @@ import java.util.List;
 public interface TypeRepository extends JpaRepository<Type,Integer> {
 
 }
+
+
