@@ -2,7 +2,6 @@ package Website2.backend.repository;
 
 import Website2.backend.model.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
-<<<<<<< HEAD:src/main/java/Website2/backend/repository/OrderRepository.java
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -36,10 +35,4 @@ public interface OrderRepository extends JpaRepository<Order,Integer>{
     Integer ordersInLastMonth();
 
 
-=======
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface OrderRepository extends JpaRepository<Order,Integer>{
->>>>>>> 0a285c5cfca88a488c352faa5d63af54bf6abb57:backend/backend/src/main/java/Website2/backend/repository/OrderRepository.java
 }
