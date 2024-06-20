@@ -1,6 +1,5 @@
 package Website2.backend.service.Class;
 
-import Website2.backend.model.entity.Order;
 import Website2.backend.model.entity.Type;
 import Website2.backend.model.request.CreateType;
 import Website2.backend.model.request.UpdateType;

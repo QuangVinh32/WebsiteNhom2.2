@@ -1,10 +1,8 @@
 package Website2.backend.service;
 
 import Website2.backend.model.entity.Nsx;
-import Website2.backend.model.entity.Type;
 import Website2.backend.model.request.CreateNsx;
 import Website2.backend.model.request.UpdateNsx;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;

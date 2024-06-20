@@ -1,13 +1,12 @@
 package Website2.backend.model.entity;
 
-import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "`order_detail`")
+@Table(name = "order_detail")
 public class OrderDetail {
 
     @EmbeddedId
@@ -18,12 +17,9 @@ public class OrderDetail {
 
     @ManyToOne
     @JoinColumn(name = "productId", referencedColumnName = "productId", insertable = false, updatable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-
     private Product product;
 
     @ManyToOne
     @JoinColumn(name = "orderId", referencedColumnName = "orderId", insertable = false, updatable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Order order;
 }

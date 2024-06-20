@@ -2,8 +2,7 @@ package Website2.backend.service;
 
 import Website2.backend.model.entity.Product;
 import Website2.backend.model.request.CreateProduct;
-import Website2.backend.model.request.ProductRequest;
-import org.springframework.stereotype.Service;
+import Website2.backend.model.request.UpdateProduct;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +14,9 @@ public interface IProductService {
 
     Optional<Product> getProductById(int id);
 
-    void createProduct(CreateProduct createProduct);
+    void createProduct(CreateProduct createProduct) throws Exception;
 
-    Product updateProduct(int productId, ProductRequest productRequest);
+    Product updateProduct(int productId, UpdateProduct updateProduct) throws Exception;
 
     void deleteProduct(int id);
 

@@ -1,10 +1,11 @@
 package Website2.backend.model.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import org.springframework.data.annotation.Id;
 
+import lombok.Data;
+
+import javax.persistence.*;
 import java.util.Date;
+
 @Data
 @Entity
 @Table(name = "token")
@@ -23,4 +24,3 @@ public class Token {
     @Column(name = "expiration")
     private Date expiration;
 }
-
