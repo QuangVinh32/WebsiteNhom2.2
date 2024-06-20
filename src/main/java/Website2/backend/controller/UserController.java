@@ -3,12 +3,9 @@ package Website2.backend.controller;
 import Website2.backend.model.entity.Users;
 import Website2.backend.model.request.UserRequest;
 import Website2.backend.service.IUserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Optional;
 
-@Controller
+@RestController
 @CrossOrigin("*")
 @RequestMapping("/api/v1/user")
 @Validated
