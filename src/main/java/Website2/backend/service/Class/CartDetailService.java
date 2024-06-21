@@ -1,5 +1,4 @@
 package Website2.backend.service.Class;
-
 import Website2.backend.model.entity.*;
 import Website2.backend.model.request.CreateCartDetail;
 import Website2.backend.model.request.PkCartDetail;
@@ -67,9 +66,11 @@ public class CartDetailService implements ICartDetailService {
 
     @Override
     public CartDetail updateCartDetail(UpdateCartDetail updateCartDetail) {
-        return null;
+        CartDetail cartDetail = cartDetailRepository.findById(updateCartDetail.getCartDetailPK())
+                .orElseThrow(() -> new EntityNotFoundException("Không thấy id"));
+        cartDetail.setCount(updateCartDetail.getCount());
+        return cartDetailRepository.save(cartDetail);
     }
-
     @Override
     public void deleteCartDetail(PkCartDetail pkCartDetail) {
         CartDetailPK cartDetailPK = pkCartDetail.getCartDetailPK();
