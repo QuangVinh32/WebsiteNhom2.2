@@ -10,10 +10,10 @@ public class OrderDetailPK implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "productId")
-    private Product product;
+    private Product productId;
 
     @ManyToOne
     @JoinColumn(name = "orderId")
-    private Order order;
+    private Order orderId;
 
 }
