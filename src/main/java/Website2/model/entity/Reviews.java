@@ -7,7 +7,7 @@ import javax.persistence.*;import lombok.Data;
 public class Reviews {
 
     @EmbeddedId
-    private ReviewPK reviewPK;
+    private Reviews reviewPK;
 
     @Column(name = "content")
     private String content;

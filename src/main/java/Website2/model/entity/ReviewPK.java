@@ -1,6 +1,9 @@
-package Website2.model.entity;
+
 
 import javax.persistence.*;
+
+import Website2.model.entity.Product;
+import Website2.model.entity.Users;
 import lombok.Data;
 
 import java.io.Serializable;
