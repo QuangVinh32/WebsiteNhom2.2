@@ -1,5 +1,4 @@
 package Website2.service.Class;
-import Website2.backend.model.entity.*;
 import Website2.model.entity.Cart;
 import Website2.model.entity.CartDetail;
 import Website2.model.entity.CartDetailPK;
@@ -40,9 +39,9 @@ public class CartDetailService implements ICartDetailService {
     @Override
     public CartDetail findById(PkCartDetail pkCartDetail) {
         CartDetailPK cartDetailPK = pkCartDetail.getCartDetailPK();
-        CartDetail chiTietDatPhong = cartDetailRepository.findById(cartDetailPK)
+        CartDetail cartDetail = cartDetailRepository.findById(cartDetailPK)
                 .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy id mong muốn"));
-        return chiTietDatPhong;
+        return cartDetail;
     }
 
     @Override
