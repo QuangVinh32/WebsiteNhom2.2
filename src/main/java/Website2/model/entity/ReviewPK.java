@@ -1,4 +1,4 @@
-
+package Website2.model.entity;
 
 import javax.persistence.*;
 
