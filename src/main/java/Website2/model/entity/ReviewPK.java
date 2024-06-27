@@ -1,5 +1,8 @@
 package Website2.model.entity;
 
+
+import javax.persistence.*;
+
 import lombok.Data;
 
 import javax.persistence.*;

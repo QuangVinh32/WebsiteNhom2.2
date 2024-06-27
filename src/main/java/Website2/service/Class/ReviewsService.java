@@ -1,4 +1,7 @@
 package Website2.service.Class;
+import Website2.model.entity.CartDetail;
+import Website2.model.entity.CartDetailPK;
+import Website2.model.entity.ReviewPK;
 import Website2.model.entity.Reviews;
 import Website2.model.request.CreateReviews;
 import Website2.model.request.PkReviews;
@@ -11,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 @Service
 public class ReviewsService implements IReviewService {
@@ -30,14 +34,15 @@ public class ReviewsService implements IReviewService {
 
     @Override
     public Reviews findById(PkReviews pkReviews) {
-        return null;
+        ReviewPK reviewPK = pkReviews.getReviewPK();
+        Reviews reviews = reviewRepository.findById(reviewPK)
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy id mong muốn"));
+        return reviews;
     }
 
     @Override
     public void createReviews(CreateReviews createReviews) {
-
     }
-
     @Override
     public Reviews updateReviews(UpdateReviews updateReviews) {
         return null;
@@ -45,6 +50,9 @@ public class ReviewsService implements IReviewService {
 
     @Override
     public void deleteReviews(PkReviews pkReviews) {
-
+        ReviewPK reviewPK = pkReviews.getReviewPK();
+        Reviews reviews = reviewRepository.findById(reviewPK)
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy id mong muốn"));
+        reviewRepository.delete(reviews);
     }
 }
