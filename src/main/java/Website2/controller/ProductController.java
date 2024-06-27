@@ -39,22 +39,22 @@ public class ProductController {
         return ResponseEntity.ok("Thêm sản phẩm thành công");
     }
     @PutMapping("/update-product/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable Integer id,@RequestBody UpdateProduct updateProduct) throws Exception {
+    public ResponseEntity<?> updateProduct(@PathVariable int id,@RequestBody UpdateProduct updateProduct) throws Exception {
         productService.updateProduct(id,updateProduct);
         return ResponseEntity.ok("Update sản phẩm thành công");
     }
     @DeleteMapping("/delete-product/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("id") Integer id){
+    public ResponseEntity<?> deleteProduct(@PathVariable("id") int id){
         productService.deleteProduct(id);
         return ResponseEntity.ok("Xóa Sản phẩm thành công");
     }
     @GetMapping("/find-by-id/{id}")
-    public ProductDTO findProductById(@PathVariable("id") Integer id ){
+    public ProductDTO findProductById(@PathVariable("id") int id ){
         Optional<Product> product = productService.getProductById(id);
         return mapper.map(product,ProductDTO.class);
     }
     @GetMapping("/find-by-typeid/{id}")
-    public ProductDTO getAllProductByTypeId(@PathVariable("id") Integer id ){
+    public ProductDTO getAllProductByTypeId(@PathVariable("id") int id ){
         List<Product> product = productService.getAllProductByTypeId(id);
         return mapper.map(product,ProductDTO.class);
     }

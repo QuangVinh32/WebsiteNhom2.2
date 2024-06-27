@@ -6,19 +6,19 @@ import javax.persistence.*;
 import java.util.List;
 
 @Data
-@Table(name = "`type`")
 @Entity
+@Table(name = "type")
 public class Type {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "typeId")
-    private int typeId;
+    private Long typeId;
 
-    @Column(name = "typeName",nullable = false, unique = true)
+    @Column(name = "typeName", nullable = false, unique = true)
     private String typeName;
 
     @Column(name = "description")
-    private String Description;
+    private String description;
 
     @OneToMany(mappedBy = "type", cascade = CascadeType.ALL)
     private List<Product> products;

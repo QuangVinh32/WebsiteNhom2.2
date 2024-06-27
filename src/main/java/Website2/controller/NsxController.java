@@ -40,12 +40,12 @@ public class NsxController {
         return ResponseEntity.ok("Thêm đơn hàng thành công");
     }
     @PutMapping("/update-nsx/{id}")
-    public ResponseEntity<?> updateNsx(@PathVariable Integer id,@RequestBody UpdateNsx updateNsx) throws Exception {
+    public ResponseEntity<?> updateNsx(@PathVariable int id,@RequestBody UpdateNsx updateNsx) throws Exception {
         nsxService.updateNsx(id,updateNsx);
         return ResponseEntity.ok("Sửa đơn hàng thành công");
     }
     @DeleteMapping("/delete-nsx/{id}")
-    public ResponseEntity<?> deleteNsx(@PathVariable("id") Integer id){
+    public ResponseEntity<?> deleteNsx(@PathVariable("id") int id){
         nsxService.deleteByNsxId(id);
         return ResponseEntity.ok("Xóa đơn hàng thàng công");
     }

@@ -9,9 +9,10 @@ import Website2.repository.UserRepository;
 import Website2.service.IReviewService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class ReviewsService implements IReviewService {
     @Autowired
     private ModelMapper mapper;

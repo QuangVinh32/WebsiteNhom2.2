@@ -26,7 +26,7 @@ public class NsxService implements INsxService {
     }
 
     @Override
-    public Optional<Nsx> findByNsxId(Integer id) {
+    public Optional<Nsx> findByNsxId(int id) {
         return nsxRepository.findById(id);
     }
 
@@ -41,7 +41,7 @@ public class NsxService implements INsxService {
     }
 
     @Override
-    public Nsx updateNsx(Integer id, UpdateNsx updateNsx) throws Exception {
+    public Nsx updateNsx(int id, UpdateNsx updateNsx) throws Exception {
         Optional<Nsx> nsxDb = findByNsxId(id);
         if (nsxDb.isPresent()){
             Nsx existingNsx = nsxDb.get();
@@ -55,7 +55,7 @@ public class NsxService implements INsxService {
 
 
     @Override
-    public void deleteByNsxId(Integer id) {
+    public void deleteByNsxId(int id) {
         nsxRepository.deleteById(id);
     }
 }

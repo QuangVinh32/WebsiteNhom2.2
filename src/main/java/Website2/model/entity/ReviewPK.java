@@ -1,15 +1,12 @@
+package Website2.model.entity;
 
-
-import javax.persistence.*;
-
-import Website2.model.entity.Product;
-import Website2.model.entity.Users;
 import lombok.Data;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
-@Embeddable
 @Data
+@Embeddable
 public class ReviewPK implements Serializable {
 
     @ManyToOne
@@ -19,4 +16,6 @@ public class ReviewPK implements Serializable {
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product productId;
+
+
 }

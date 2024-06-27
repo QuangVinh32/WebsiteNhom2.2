@@ -1,26 +1,18 @@
 package Website2.model.entity;
 
-import javax.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
+import javax.persistence.*;
 import java.util.List;
 
-@Entity
-@Table(name = "`users`")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@DynamicInsert
-@DynamicUpdate
+@Entity
+@Table(name = "users")
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userId")
-    private int userId;
+    private Long userId;
 
     @Column(name = "username", nullable = false, unique = true, updatable = false)
     private String username;

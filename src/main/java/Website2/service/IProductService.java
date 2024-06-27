@@ -3,10 +3,11 @@ package Website2.service;
 import Website2.model.entity.Product;
 import Website2.model.request.CreateProduct;
 import Website2.model.request.UpdateProduct;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public interface IProductService {
     List<Product> getAllProducts();
 

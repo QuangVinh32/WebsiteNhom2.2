@@ -1,5 +1,8 @@
 package Website2.model.entity;
-import javax.persistence.*;import lombok.Data;
+
+import lombok.Data;
+
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -7,7 +10,7 @@ import javax.persistence.*;import lombok.Data;
 public class Reviews {
 
     @EmbeddedId
-    private Reviews reviewPK;
+    private ReviewPK reviewPK;
 
     @Column(name = "content")
     private String content;
@@ -16,10 +19,12 @@ public class Reviews {
     private int rate;
 
     @ManyToOne
+    @MapsId("userId")
     @JoinColumn(name = "userId", referencedColumnName = "userId", insertable = false, updatable = false)
     private Users user;
 
     @ManyToOne
+    @MapsId("productId")
     @JoinColumn(name = "productId", referencedColumnName = "productId", insertable = false, updatable = false)
     private Product product;
 }

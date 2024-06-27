@@ -40,12 +40,12 @@ public class OrderController {
         return ResponseEntity.ok("Thêm đơn hàng thành công");
     }
     @PutMapping("/update-order/{id}")
-    public ResponseEntity<?> updateOrder(@PathVariable Integer id,@RequestBody UpdateOrder updateOrder) throws Exception {
+    public ResponseEntity<?> updateOrder(@PathVariable int id,@RequestBody UpdateOrder updateOrder) throws Exception {
         orderService.updateOrder(id,updateOrder);
         return ResponseEntity.ok("Sửa đơn hàng thành công");
     }
     @DeleteMapping("/delete-order/{id}")
-    public ResponseEntity<?> deleteOrder(@PathVariable("id") Integer id){
+    public ResponseEntity<?> deleteOrder(@PathVariable("id") int id){
         orderService.deleteOrder(id);
         return ResponseEntity.ok("Xóa đơn hàng thàng công");
     }

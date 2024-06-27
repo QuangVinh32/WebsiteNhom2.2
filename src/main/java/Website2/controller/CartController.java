@@ -42,17 +42,17 @@ public class CartController {
         return ResponseEntity.ok("Thêm Hóa Đơn thành công");
     }
     @PutMapping("/update-cart/{id}")
-    public ResponseEntity<?> updateCart(@PathVariable Integer id,@RequestBody UpdateCart updateCart) throws Exception {
+    public ResponseEntity<?> updateCart(@PathVariable int id,@RequestBody UpdateCart updateCart) throws Exception {
         cartService.updateCart(id,updateCart);
         return ResponseEntity.ok("Sửa Hóa Đơn thành công");
     }
     @DeleteMapping("/delete-cart/{id}")
-    public ResponseEntity<?> deleteCart(@PathVariable("id") Integer id){
+    public ResponseEntity<?> deleteCart(@PathVariable("id") int id){
         cartService.deleteByCartId(id);
         return ResponseEntity.ok("Xóa Hóa Đơn thàng công");
     }
     @GetMapping("/find-by-id/{id}")
-    public CartDTO findCartById(@PathVariable("id") Integer id ){
+    public CartDTO findCartById(@PathVariable("id") int id ){
         Optional<Cart> cart = cartService.findByCartId(id);
         return mapper.map(cart,CartDTO.class);
     }

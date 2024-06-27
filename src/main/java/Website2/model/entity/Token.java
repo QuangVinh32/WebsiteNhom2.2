@@ -1,10 +1,6 @@
 package Website2.model.entity;
 
-
-
-import javax.persistence.*;
 import lombok.Data;
-
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,14 +12,14 @@ public class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
-    @Column(name = "token", length = 1000)
+    @Column(name = "token", length = 1000, nullable = false)
     private String token;
 
-    @Column(name = "user_Agent")
+    @Column(name = "user_agent")
     private String userAgent;
 
-    @Column(name = "expiration")
+    @Column(name = "expiration", nullable = false)
     private Date expiration;
 }

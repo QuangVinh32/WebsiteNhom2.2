@@ -1,27 +1,28 @@
 package Website2.model.entity;
 
-import javax.persistence.*;import lombok.Data;
+import lombok.Data;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @Entity
-@Table(name = "`product`")
+@Table(name = "product")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "productId")
-    private int productId; // Changed type to Long for compatibility with IDENTITY strategy
+    private Long productId;
 
     @Column(name = "productCode", nullable = false, unique = true)
-    private int productCode;
+    private String productCode;
 
     @Column(name = "productName", nullable = false)
     private String productName;
 
     @Column(name = "productDescription")
-    private String descriptionProduct;
+    private String productDescription;
 
     @Column(name = "price", nullable = false)
     private int price;
@@ -37,30 +38,25 @@ public class Product {
     private ProductStatus status;
 
     @Column(name = "createTime", nullable = false, updatable = false)
-    private LocalDateTime createdTime;
+    private LocalDateTime createTime;
 
     @Column(name = "soLuongTonKho", nullable = false)
     private int soLuongTonKho;
 
-    // Đúng
     @ManyToOne
     @JoinColumn(name = "nsxId")
     private Nsx nsx;
 
-    // Đúng
     @ManyToOne
     @JoinColumn(name = "typeId")
     private Type type;
 
-    // Đúng
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Reviews> reviews;
 
-    // Đúng
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetail;
 
-    // Đúng
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<CartDetail> cartDetails;
 }
