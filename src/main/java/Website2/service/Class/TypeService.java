@@ -45,7 +45,7 @@ public class TypeService implements ITypeService {
     @Override
     public void createType(CreateType createType) throws Exception {
         Optional<Type> existingProduct = typeRepository.findById(createType.getTypeId());
-            if (existingProduct.isEmpty()){
+            if (existingProduct.isPresent()){
                 throw new Exception("Type không có sản phẩm nào");
             }
             Type typeDb = mapper.map(createType, Type.class);

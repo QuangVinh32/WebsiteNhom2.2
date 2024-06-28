@@ -37,7 +37,7 @@ public class ProductService implements IProductService {
     @Override
     public void createProduct(CreateProduct createProduct) throws Exception {
         Optional<Product> existingProduct = productRepository.findById(createProduct.getProductId());
-        if (existingProduct.isEmpty()){
+        if (existingProduct.isPresent()){
             throw new Exception(".....");
         }
         Product productDb = mapper.map(createProduct, Product.class);

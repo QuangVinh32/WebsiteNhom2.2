@@ -29,9 +29,9 @@ public class CartController {
 
     @GetMapping("/find-all-cart")
     List<CartDTO> findAll() {
-        List<Cart> hoaDons = cartService.findAll();
-        List<CartDTO> cartDTOS = hoaDons.stream()
-                .map(hoaDon -> mapper.map(hoaDon, CartDTO.class))
+        List<Cart> carts = cartService.findAll();
+        List<CartDTO> cartDTOS = carts.stream()
+                .map(hoaDon -> mapper.map(carts, CartDTO.class))
                 .collect(Collectors.toList());
 
         return cartDTOS;

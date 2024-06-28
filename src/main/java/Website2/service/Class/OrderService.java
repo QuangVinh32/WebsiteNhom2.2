@@ -36,7 +36,7 @@ public class OrderService implements IOrderService {
     @Override
     public void createOrder(CreateOrder createOrder) throws Exception {
         Optional<Order> existingOrder = orderRepository.findById(createOrder.getOrderId());
-        if (existingOrder.isEmpty()){
+        if (existingOrder.isPresent()){
             throw new Exception(".....");
         }
         Order orderDb = mapper.map(createOrder, Order.class);

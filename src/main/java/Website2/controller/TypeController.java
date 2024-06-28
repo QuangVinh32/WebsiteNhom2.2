@@ -37,16 +37,16 @@ public class TypeController {
     @PostMapping("/create-type")
     public ResponseEntity<?> createType(@RequestBody CreateType createType) throws Exception {
         typeService.createType(createType);
-        return ResponseEntity.ok("Thêm đơn hàng thành công");
+        return ResponseEntity.ok("Thêm loại thành công");
     }
     @PutMapping("/update-typer/{id}")
     public ResponseEntity<?> updateType(@PathVariable Integer id,@RequestBody UpdateType updateType) throws Exception {
         typeService.updateType(id,updateType);
-        return ResponseEntity.ok("Sửa đơn hàng thành công");
+        return ResponseEntity.ok("Sửa loại thành công");
     }
     @DeleteMapping("/delete-type/{id}")
     public ResponseEntity<?> deleteType(@PathVariable("id") Integer id){
         typeService.deleteByTypeId(id);
-        return ResponseEntity.ok("Xóa đơn hàng thàng công");
+        return ResponseEntity.ok("Xóa loại thàng công");
     }
 }

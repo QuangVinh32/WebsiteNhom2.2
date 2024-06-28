@@ -33,7 +33,7 @@ public class NsxService implements INsxService {
     @Override
     public void createNsx(CreateNsx createNsx) throws Exception {
         Optional<Nsx> existingNsx = nsxRepository.findById(createNsx.getId());
-        if (existingNsx.isEmpty()){
+        if (existingNsx.isPresent()){
             throw new Exception("Không có sản phẩm nào thuộc nhà sản xuất");
         }
         Nsx nsxDb = modelMapper.map(createNsx, Nsx.class);

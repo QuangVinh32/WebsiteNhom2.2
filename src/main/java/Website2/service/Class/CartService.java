@@ -34,12 +34,13 @@ public class CartService implements ICartService {
     @Override
     public void createCart(CreateCart createCart) throws Exception {
         Optional<Cart> existingCart = cartRepository.findById(createCart.getCartId());
-        if (existingCart.isEmpty()){
-            throw new Exception(".....");
+        if (existingCart.isPresent()){
+            throw new Exception("Mã Dịch vụ đã tồn tại");
         }
         Cart cartDb = mapper.map(createCart, Cart.class);
         cartRepository.save(cartDb);
     }
+
 
     @Override
     public Cart updateCart(int id, UpdateCart updateCart) throws Exception {
