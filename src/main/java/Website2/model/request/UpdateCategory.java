@@ -3,7 +3,7 @@ package Website2.model.request;
 import lombok.Data;
 
 @Data
-public class UpdateType {
-    private String typeName;
+public class UpdateCategory {
+    private String categoryName;
     private String Description;
 }

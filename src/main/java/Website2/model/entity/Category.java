@@ -7,19 +7,19 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "type")
-public class Type {
+@Table(name = "category")
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "typeId")
-    private int typeId;
+    @Column(name = "categoryId")
+    private Integer categoryId;
 
     @Column(name = "typeName", nullable = false, unique = true)
-    private String typeName;
+    private String categoryName;
 
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "type", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> products;
 }

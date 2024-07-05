@@ -12,7 +12,7 @@ import java.util.List;
 public class Cart{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int cartId;
+    private Integer cartId;
 
     @Column(name = "total")
     private int total;

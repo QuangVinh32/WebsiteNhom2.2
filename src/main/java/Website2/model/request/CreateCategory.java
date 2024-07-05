@@ -3,8 +3,8 @@ package Website2.model.request;
 import lombok.Data;
 
 @Data
-public class CreateType {
-    private Integer typeId;
+public class CreateCategory {
+
     private String typeName;
     private String Description;
 }

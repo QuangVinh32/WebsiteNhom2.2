@@ -7,6 +7,8 @@ import java.util.Date;
 
 @Data
 public class OrderDTO {
+    private Integer orderId;
+
     private int total;
 
     private String address;

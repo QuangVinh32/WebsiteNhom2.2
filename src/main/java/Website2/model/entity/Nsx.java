@@ -11,7 +11,7 @@ import java.util.List;
 public class Nsx {
     @Id
     @Column(name = "id")
-    private int id;
+    private Integer id;
     @Column(name = "description")
     private String description;
 

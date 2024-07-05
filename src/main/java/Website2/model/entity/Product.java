@@ -13,7 +13,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "productId")
-    private Long productId;
+    private Integer productId;
 
     @Column(name = "productCode", nullable = false, unique = true)
     private String productCode;
@@ -48,8 +48,8 @@ public class Product {
     private Nsx nsx;
 
     @ManyToOne
-    @JoinColumn(name = "typeId")
-    private Type type;
+    @JoinColumn(name = "categoryId")
+    private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Reviews> reviews;

@@ -6,8 +6,11 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class TypeDTO {
-    private String typeName;
+public class CategoryDTO {
+
+    private Integer categoryId;
+
+    private String categoryName;
 
     private String Description;
 
