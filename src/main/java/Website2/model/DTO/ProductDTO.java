@@ -7,21 +7,14 @@ import java.time.LocalDateTime;
 
 @Data
 public class ProductDTO {
+    private int productId;
     private int productCode;
-
     private String productName;
-
     private String descriptionProduct;
-
     private int price;
-
     private int discount;
-
     private String image;
-
     private ProductStatus status;
-
     private LocalDateTime createdTime;
-
     private int soLuongTonKho;
 }

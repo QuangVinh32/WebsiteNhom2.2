@@ -49,9 +49,14 @@ public class ProductController {
         return ResponseEntity.ok("Xóa Sản phẩm thành công");
     }
     @GetMapping("/find-by-id/{id}")
-    public ProductDTO findProductById(@PathVariable("id") int id ){
+    public ResponseEntity<ProductDTO> findProductById(@PathVariable("id") int id) {
         Optional<Product> product = productService.getProductById(id);
-        return mapper.map(product,ProductDTO.class);
+        if (product.isPresent()) {
+            ProductDTO productDTO = mapper.map(product.get(), ProductDTO.class);
+            return ResponseEntity.ok(productDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
     @GetMapping("/find-by-typeid/{id}")
     public ProductDTO getAllProductByTypeId(@PathVariable("id") int id ){
