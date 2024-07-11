@@ -3,6 +3,8 @@ package Website2.service;
 import Website2.model.entity.Product;
 import Website2.model.request.CreateProduct;
 import Website2.model.request.UpdateProduct;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.Optional;
 public interface IProductService {
     List<Product> getAllProducts();
 
-    List<Product> getAllProductsPage(int page, int pageSize);
+    Page<Product> getAllProductsPage(Pageable pageable);
 
     Optional<Product> getProductById(int id);
 

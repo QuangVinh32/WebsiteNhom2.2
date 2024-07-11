@@ -7,6 +7,8 @@ import Website2.repository.ProductRepository;
 import Website2.service.IProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +26,8 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> getAllProductsPage(int page, int pageSize) {
-        return null;
+    public Page<Product> getAllProductsPage(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
 

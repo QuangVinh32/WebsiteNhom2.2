@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class UpdateCategory {
-    private String categoryName;
-    private String Description;
+    //    private String categoryName;
+    private String description;
 }
