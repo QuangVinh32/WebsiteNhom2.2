@@ -40,11 +40,11 @@ public class ProductSpecification {
                 }
 
                 // Add sorting
-                if (form.getNameAsc() != null && form.getNameAsc()) {
-                    query.orderBy(builder.asc(root.get("productName")));
+                if (form.getPriceAsc() != null && form.getPriceAsc()) {
+                    query.orderBy(builder.asc(root.get("price")));
                 }
-                if (form.getNameDesc() != null && form.getNameDesc()) {
-                    query.orderBy(builder.desc(root.get("productName")));
+                if (form.getPriceDesc() != null && form.getPriceDesc()) {
+                    query.orderBy(builder.desc(root.get("price")));
                 }
 
                 return builder.and(predicates.toArray(new Predicate[0]));
