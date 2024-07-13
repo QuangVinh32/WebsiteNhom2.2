@@ -1,7 +1,9 @@
 package Website2.controller;
 import Website2.model.DTO.ProductDTO;
+import Website2.model.DTO.ProductDTOv2;
 import Website2.model.entity.Product;
 import Website2.model.request.CreateProduct;
+import Website2.model.request.FilterProduct;
 import Website2.model.request.UpdateProduct;
 import Website2.service.IProductService;
 import org.modelmapper.ModelMapper;
@@ -25,19 +27,19 @@ public class ProductController {
     @Autowired
     private ModelMapper mapper;
 
-//    @GetMapping("/find-all-product")
-//    public List<ProductDTO> findAllPhong() {
-//        List<Product> phongs = productService.getAllProducts();
-//        List<ProductDTO> productDTOS = phongs.stream()
-//                .map(phong -> mapper.map(phong, ProductDTO.class))
-//                .collect(Collectors.toList());
-//        return productDTOS;
-//    }
-     @GetMapping("/find-all-product")
-     public Page<ProductDTO> findAllPhongPage(Pageable pageable) {
-            Page<Product> productsPage = productService.getAllProductsPage(pageable);
-            return productsPage.map(product -> mapper.map(product, ProductDTO.class));
-}
+    @GetMapping("/find-all-product")
+    public List<ProductDTO> findAllPhong() {
+        List<Product> phongs = productService.getAllProducts();
+        List<ProductDTO> productDTOS = phongs.stream()
+                .map(phong -> mapper.map(phong, ProductDTO.class))
+                .collect(Collectors.toList());
+        return productDTOS;
+    }
+//     @GetMapping("/find-all-product")
+//     public Page<ProductDTO> findAllPhongPage(Pageable pageable, FilterProduct filterProduct) {
+//            Page<Product> productsPage = productService.getAllProductsPage(pageable,filterProduct);
+//            return productsPage.map(product -> mapper.map(product, ProductDTO.class));
+//}
 
     @PostMapping("/create-product")
     public ResponseEntity<?> createProduct(@RequestBody CreateProduct createProduct) throws Exception {
@@ -55,11 +57,11 @@ public class ProductController {
         return ResponseEntity.ok("Xóa Sản phẩm thành công");
     }
     @GetMapping("/find-by-id/{id}")
-    public ResponseEntity<ProductDTO> findProductById(@PathVariable("id") int id) {
+    public ResponseEntity<ProductDTOv2> findProductById(@PathVariable("id") int id) {
         Optional<Product> product = productService.getProductById(id);
         if (product.isPresent()) {
-            ProductDTO productDTO = mapper.map(product.get(), ProductDTO.class);
-            return ResponseEntity.ok(productDTO);
+            ProductDTOv2 productDTOv2 = mapper.map(product.get(), ProductDTOv2.class);
+            return ResponseEntity.ok(productDTOv2);
         } else {
             return ResponseEntity.notFound().build();
         }

@@ -2,6 +2,7 @@ package Website2.service;
 
 import Website2.model.entity.Product;
 import Website2.model.request.CreateProduct;
+import Website2.model.request.FilterProduct;
 import Website2.model.request.UpdateProduct;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +14,7 @@ import java.util.Optional;
 public interface IProductService {
     List<Product> getAllProducts();
 
-    Page<Product> getAllProductsPage(Pageable pageable);
+    Page<Product> getAllProductsPage(Pageable pageable, FilterProduct filterProduct);
 
     Optional<Product> getProductById(int id);
 

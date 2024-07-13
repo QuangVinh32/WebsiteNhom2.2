@@ -6,5 +6,5 @@ import lombok.Data;
 public class CreateCategory {
 
     private String typeName;
-    private String Description;
+    private String description;
 }

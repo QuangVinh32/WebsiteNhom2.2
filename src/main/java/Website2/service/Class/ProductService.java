@@ -2,13 +2,16 @@ package Website2.service.Class;
 
 import Website2.model.entity.Product;
 import Website2.model.request.CreateProduct;
+import Website2.model.request.FilterProduct;
 import Website2.model.request.UpdateProduct;
 import Website2.repository.ProductRepository;
 import Website2.service.IProductService;
+import Website2.speacification.ProductSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,11 +29,10 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Page<Product> getAllProductsPage(Pageable pageable) {
-        return productRepository.findAll(pageable);
+    public Page<Product> getAllProductsPage(Pageable pageable,FilterProduct filterProduct) {
+        Specification<Product> spec = ProductSpecification.buildSpec(filterProduct);
+        return productRepository.findAll(spec,pageable);
     }
-
-
     @Override
     public Optional<Product> getProductById(int id) {
         return productRepository.findById(id);

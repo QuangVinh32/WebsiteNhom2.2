@@ -36,6 +36,11 @@ public class ReviewsController {
                 .collect(Collectors.toList());
         return reviewsDTOS;
     }
+//    @GetMapping("/find-all-reviews")
+//    public ResponseEntity<List<Reviews>> getReviewsByProductId(@RequestParam int productId) {
+//        List<Reviews> reviews = reviewService.findByProductId(productId);
+//        return ResponseEntity.ok(reviews);
+//    }
     @GetMapping("/find-reviews-by-id")
     public ReviewsDTO findReviewById(@RequestBody PkReviews request) {
         Reviews reviews = reviewService.findById(request);

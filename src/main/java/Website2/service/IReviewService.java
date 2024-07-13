@@ -11,6 +11,7 @@ import java.util.List;
 @Service // or @Component
 public interface IReviewService {
     List<Reviews> findAllReviews();
+//    List<Reviews> findByProductId(int productId);
     Reviews findById(PkReviews pkReviews);
     void createReviews(CreateReviews createReviews);
     Reviews updateReviews(UpdateReviews updateReviews);
