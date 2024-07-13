@@ -17,32 +17,34 @@ public class ProductSpecification {
         if (form == null) {
             return null;
         }
+
         return new Specification<Product>() {
             @Override
             public Predicate toPredicate(Root<Product> root,
                                          CriteriaQuery<?> query,
                                          CriteriaBuilder builder) {
                 List<Predicate> predicates = new ArrayList<>();
-                // SELECT * FORM account WHERE username LIKE '%search%'
-                // Lây username theo biến java
+
+                // Filter by product name
                 if (StringUtils.hasText(form.getSearch())) {
-                    predicates.add(builder.or(
-                                    builder.like(
-                                            root.get("productName"), "%" + form.getSearch() + "%"
-                                    )
-                            )
-                    );
+                    predicates.add(builder.like(root.get("productName"), "%" + form.getSearch() + "%"));
                 }
+
+                // Filter by price range
                 if (form.getPriceMin() != null) {
-                    predicates.add(builder.greaterThanOrEqualTo(
-                            root.get("price"), form.getPriceMin()
-                    ));
+                    predicates.add(builder.greaterThanOrEqualTo(root.get("price"), form.getPriceMin()));
                 }
 
                 if (form.getPriceMax() != null) {
-                    predicates.add(builder.lessThanOrEqualTo(
-                            root.get("price"), form.getPriceMax()
-                    ));
+                    predicates.add(builder.lessThanOrEqualTo(root.get("price"), form.getPriceMax()));
+                }
+
+                // Add sorting
+                if (form.getNameAsc() != null && form.getNameAsc()) {
+                    query.orderBy(builder.asc(root.get("productName")));
+                }
+                if (form.getNameDesc() != null && form.getNameDesc()) {
+                    query.orderBy(builder.desc(root.get("productName")));
                 }
 
                 return builder.and(predicates.toArray(new Predicate[0]));

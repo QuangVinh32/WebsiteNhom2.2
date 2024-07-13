@@ -26,20 +26,20 @@ public class ProductController {
     private IProductService productService;
     @Autowired
     private ModelMapper mapper;
-
-    @GetMapping("/find-all-product")
-    public List<ProductDTO> findAllPhong() {
-        List<Product> phongs = productService.getAllProducts();
-        List<ProductDTO> productDTOS = phongs.stream()
-                .map(phong -> mapper.map(phong, ProductDTO.class))
-                .collect(Collectors.toList());
-        return productDTOS;
-    }
-//     @GetMapping("/find-all-product")
-//     public Page<ProductDTO> findAllPhongPage(Pageable pageable, FilterProduct filterProduct) {
-//            Page<Product> productsPage = productService.getAllProductsPage(pageable,filterProduct);
-//            return productsPage.map(product -> mapper.map(product, ProductDTO.class));
-//}
+//
+//    @GetMapping("/find-all-product")
+//    public List<ProductDTO> findAllPhong() {
+//        List<Product> phongs = productService.getAllProducts();
+//        List<ProductDTO> productDTOS = phongs.stream()
+//                .map(phong -> mapper.map(phong, ProductDTO.class))
+//                .collect(Collectors.toList());
+//        return productDTOS;
+//    }
+     @GetMapping("/find-all-product")
+     public Page<ProductDTO> findAllPhongPage(Pageable pageable, FilterProduct filterProduct) {
+            Page<Product> productsPage = productService.getAllProductsPage(pageable,filterProduct);
+            return productsPage.map(product -> mapper.map(product, ProductDTO.class));
+}
 
     @PostMapping("/create-product")
     public ResponseEntity<?> createProduct(@RequestBody CreateProduct createProduct) throws Exception {
