@@ -1,5 +1,6 @@
 package Website2.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -28,10 +29,12 @@ public class Users {
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+//    add imgame
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 8)
     private Role role;
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Reviews> reviews;

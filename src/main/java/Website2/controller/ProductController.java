@@ -46,25 +46,20 @@ public class ProductController {
         productService.createProduct(createProduct);
         return ResponseEntity.ok("Thêm sản phẩm thành công");
     }
-    @PutMapping("/update-product/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable int id,@RequestBody UpdateProduct updateProduct) throws Exception {
-        productService.updateProduct(id,updateProduct);
-        return ResponseEntity.ok("Update sản phẩm thành công");
-    }
+//    @PutMapping("/update-product/{id}")
+//    public ResponseEntity<?> updateProduct(@PathVariable int id,@RequestBody UpdateProduct updateProduct) throws Exception {
+//        productService.updateProduct(id,updateProduct);
+//        return ResponseEntity.ok("Update sản phẩm thành công");
+//    }
     @DeleteMapping("/delete-product/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable("id") int id){
         productService.deleteProduct(id);
         return ResponseEntity.ok("Xóa Sản phẩm thành công");
     }
     @GetMapping("/find-by-id/{id}")
-    public ResponseEntity<ProductDTOv2> findProductById(@PathVariable("id") int id) {
-        Optional<Product> product = productService.getProductById(id);
-        if (product.isPresent()) {
-            ProductDTOv2 productDTOv2 = mapper.map(product.get(), ProductDTOv2.class);
-            return ResponseEntity.ok(productDTOv2);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ProductDTOv2 findProductById(@PathVariable("id") int id) {
+     return  productService.getProductById(id);
+
     }
     @GetMapping("/find-by-typeid/{id}")
     public ProductDTO getAllProductByTypeId(@PathVariable("id") int id ){

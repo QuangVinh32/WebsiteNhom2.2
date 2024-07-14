@@ -1,9 +1,7 @@
 package Website2.model.entity;
 
 import lombok.Data;
-
 import javax.persistence.*;
-
 @Data
 @Entity
 @Table(name = "reviews")
@@ -17,6 +15,8 @@ public class Reviews {
 
     @Column(name = "rate")
     private int rate;
+//    add ngày tạo
+
 
     @ManyToOne
     @MapsId("userId")

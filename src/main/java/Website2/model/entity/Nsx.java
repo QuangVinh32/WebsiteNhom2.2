@@ -16,5 +16,6 @@ public class Nsx {
     private String description;
     @OneToMany(mappedBy = "nsx", cascade = CascadeType.ALL)
     private List<Product> products;
+//  Type = asus,lenovo,hp,dell,acer,macbook
 
 }

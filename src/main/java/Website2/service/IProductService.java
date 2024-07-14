@@ -1,5 +1,6 @@
 package Website2.service;
 
+import Website2.model.DTO.ProductDTOv2;
 import Website2.model.entity.Product;
 import Website2.model.request.CreateProduct;
 import Website2.model.request.FilterProduct;
@@ -16,11 +17,11 @@ public interface IProductService {
 
     Page<Product> getAllProductsPage(Pageable pageable, FilterProduct filterProduct);
 
-    Optional<Product> getProductById(int id);
+    ProductDTOv2 getProductById(int id);
 
     void createProduct(CreateProduct createProduct) throws Exception;
 
-    Product updateProduct(int productId, UpdateProduct updateProduct) throws Exception;
+//    Product updateProduct(int productId, UpdateProduct updateProduct) throws Exception;
 
     void deleteProduct(int id);
 

@@ -1,5 +1,6 @@
 package Website2.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -51,6 +52,7 @@ public class Product {
     @JoinColumn(name = "categoryId")
     private Category category;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Reviews> reviews;
 
