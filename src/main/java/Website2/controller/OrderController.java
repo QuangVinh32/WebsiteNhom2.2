@@ -1,12 +1,18 @@
 package Website2.controller;
 
 import Website2.model.DTO.OrderDTO;
+import Website2.model.DTO.ProductDTO;
 import Website2.model.entity.Order;
+import Website2.model.entity.Product;
 import Website2.model.request.CreateOrder;
+import Website2.model.request.FilterOrder;
+import Website2.model.request.FilterProduct;
 import Website2.model.request.UpdateOrder;
 import Website2.service.IOrderService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,15 +31,21 @@ public class OrderController {
     @Autowired
     private IOrderService orderService;
 
-    @GetMapping("/get-all-order")
-    List<OrderDTO> findAllOrder() {
-        List<Order> orders = orderService.getAllOrders();
-        List<OrderDTO> orderDTOS = orders.stream()
-                .map(order -> mapper.map(order, OrderDTO.class))
-                .collect(Collectors.toList());
+//    @GetMapping("/get-all-order")
+//    List<OrderDTO> findAllOrder() {
+//        List<Order> orders = orderService.getAllOrders();
+//        List<OrderDTO> orderDTOS = orders.stream()
+//                .map(order -> mapper.map(order, OrderDTO.class))
+//                .collect(Collectors.toList());
+//
+//        return orderDTOS;
+//    }
+@GetMapping("/find-all-order")
+public Page<OrderDTO> findAllOrderPage(Pageable pageable, FilterOrder filterOrder) {
+    Page<Order> orderPage = orderService.getAllOrdersPage(pageable,filterOrder);
+    return orderPage.map(order -> mapper.map(order, OrderDTO.class));
+}
 
-        return orderDTOS;
-    }
     @PostMapping("/create-order")
     public ResponseEntity<?> createOrder(@RequestBody CreateOrder createOrder) throws Exception {
         orderService.createOrder(createOrder);

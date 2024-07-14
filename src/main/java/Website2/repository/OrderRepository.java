@@ -1,14 +1,16 @@
 package Website2.repository;
 
 import Website2.model.entity.Order;
+import Website2.model.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order,Integer>{
+public interface OrderRepository extends JpaRepository<Order,Integer>, JpaSpecificationExecutor<Order> {
 //    List<Order> findAllByUserId (Integer userId);
 //
 //    @Query(

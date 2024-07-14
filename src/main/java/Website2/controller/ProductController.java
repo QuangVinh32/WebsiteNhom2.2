@@ -36,7 +36,7 @@ public class ProductController {
 //        return productDTOS;
 //    }
      @GetMapping("/find-all-product")
-     public Page<ProductDTO> findAllPhongPage(Pageable pageable, FilterProduct filterProduct) {
+     public Page<ProductDTO> findAllProductPage(Pageable pageable, FilterProduct filterProduct) {
             Page<Product> productsPage = productService.getAllProductsPage(pageable,filterProduct);
             return productsPage.map(product -> mapper.map(product, ProductDTO.class));
 }

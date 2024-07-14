@@ -47,6 +47,21 @@ public class OrderSpecification {
                 if (form.getMaxTotal() != null) {
                     predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("total"), form.getMaxTotal()));
                 }
+                // Add sorting
+                if (form.getIdAsc() != null && form.getIdAsc()) {
+                    query.orderBy(criteriaBuilder.asc(root.get("id")));
+                }
+                if (form.getIdDesc() != null && form.getIdDesc()) {
+                    query.orderBy(criteriaBuilder.desc(root.get("id")));
+                }
+                // Add sorting
+                if (form.getTotalAsc() != null && form.getTotalAsc()) {
+                    query.orderBy(criteriaBuilder.asc(root.get("total")));
+                }
+                if (form.getTotalDesc() != null && form.getTotalDesc()) {
+                    query.orderBy(criteriaBuilder.desc(root.get("total")));
+                }
+
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             }
         };

@@ -11,4 +11,8 @@ public class FilterOrder {
     private Integer maxId;
     private Integer minTotal;
     private Integer maxTotal;
+    private Boolean  idAsc;
+    private Boolean  idDesc;
+    private Boolean  totalAsc;
+    private Boolean totalDesc;
 }

@@ -1,12 +1,16 @@
 package Website2.service.Class;
 import Website2.model.entity.Order;
-import Website2.model.entity.Product;
 import Website2.model.request.CreateOrder;
+import Website2.model.request.FilterOrder;
 import Website2.model.request.UpdateOrder;
 import Website2.repository.OrderRepository;
 import Website2.service.IOrderService;
+import Website2.speacification.OrderSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,9 +28,11 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Order> getAllOrdersPage(int page, int pageSize) {
-        return null;
+    public Page<Order> getAllOrdersPage(Pageable pageable, FilterOrder filterOrder) {
+        Specification<Order> spec = OrderSpecification.buildSpec(filterOrder);
+        return orderRepository.findAll(spec,pageable);
     }
+
 
     @Override
     public Optional<Order> getProductById(int id) {

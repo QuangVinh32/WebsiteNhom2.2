@@ -12,6 +12,8 @@
 //public interface IUserService {
 //
 //    List<Users> getAllUser();
+
+//     Page<Users> getAllUsersPage(Pageable pageable, FilterUser filterUser);
 //
 //    List<Users> searchUsersByUsername(String username);
 //

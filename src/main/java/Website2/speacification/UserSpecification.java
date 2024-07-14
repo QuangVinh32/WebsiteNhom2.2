@@ -43,6 +43,13 @@ public class UserSpecification {
                             root.get("id"), form.getMaxId()
                     ));
                 }
+                // Add sorting
+                if (form.getIdAsc() != null && form.getIdAsc()) {
+                    query.orderBy(builder.asc(root.get("id")));
+                }
+                if (form.getIdDesc() != null && form.getIdDesc()) {
+                    query.orderBy(builder.desc(root.get("id")));
+                }
 
                 return builder.and(predicates.toArray(new Predicate[0]));
             }

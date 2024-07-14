@@ -7,4 +7,6 @@ public class FilterUser {
     private String search;
     private Integer minId;
     private Integer maxId;
+    private Boolean  idAsc;
+    private Boolean  idDesc;
 }

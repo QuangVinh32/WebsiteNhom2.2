@@ -8,4 +8,6 @@ public class FilterCategory {
     private String search;
     private Integer minId;
     private Integer maxId;
+    private Boolean  idAsc;
+    private Boolean  idDesc;
 }

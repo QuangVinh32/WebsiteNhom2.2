@@ -12,8 +12,10 @@ public class Nsx {
     @Id
     @Column(name = "id")
     private Integer id;
-    @Column(name = "description")
-    private String description;
+//    @Column(name = "description")
+//    private String description;
+    @Column(name = "role")
+    private NsxRole role;
     @OneToMany(mappedBy = "nsx", cascade = CascadeType.ALL)
     private List<Product> products;
 //  Type = asus,lenovo,hp,dell,acer,macbook
