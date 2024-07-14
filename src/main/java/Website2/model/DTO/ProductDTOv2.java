@@ -23,6 +23,7 @@ public class ProductDTOv2 extends RepresentationModel<ProductDTOv2> {
 
     private List<ReviewsDTO> reviews;
 
+
     @Getter
     @Setter
     @AllArgsConstructor

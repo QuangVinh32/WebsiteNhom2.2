@@ -23,6 +23,8 @@ public interface IProductService {
 
 //    Product updateProduct(int productId, UpdateProduct updateProduct) throws Exception;
 
+    Product updateProduct(int productId, UpdateProduct updateProduct) throws Exception;
+
     void deleteProduct(int id);
 
     boolean isProductNameExists(String productName);

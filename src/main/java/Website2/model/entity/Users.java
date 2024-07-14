@@ -30,6 +30,8 @@ public class Users {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 //    add imgame
+    @Column(name = "image", nullable = false, unique = true)
+    private String image;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 8)

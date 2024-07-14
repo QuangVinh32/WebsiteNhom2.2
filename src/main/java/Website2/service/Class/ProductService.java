@@ -2,7 +2,6 @@ package Website2.service.Class;
 
 import Website2.model.DTO.ProductDTOv2;
 
-import Website2.model.DTO.ReviewsDTO;
 import Website2.model.entity.Product;
 import Website2.model.entity.Reviews;
 import Website2.model.request.CreateProduct;
@@ -84,17 +83,19 @@ public class ProductService implements IProductService {
     }
 
 
-//    @Override
-//    public Product updateProduct(int productId, UpdateProduct updateProduct) throws Exception {
-//        Optional<Product> productDb = getProductById(productId);
-//        if (productDb.isPresent()){
-//            Product existingProduct = productDb.get();
-//            mapper.map(updateProduct, existingProduct);
-//            return productRepository.save(existingProduct);
-//        }else {
-//            throw new Exception("Product không tìm thấy id");
-//        }
-//    }
+    @Override
+    public Product updateProduct(int productId, UpdateProduct updateProduct) throws Exception {
+        ProductDTOv2 productDb = getProductById(productId);
+        if (productDb != null) {
+            Product existingProduct = productRepository.findById(productId)
+                    .orElseThrow(() -> new Exception("Product không tìm thấy id"));
+            mapper.map(updateProduct, existingProduct);
+            return productRepository.save(existingProduct);
+        } else {
+            throw new Exception("Product không tìm thấy id");
+        }
+    }
+
     @Override
     public void deleteProduct(int id) {
         productRepository.deleteById(id);
