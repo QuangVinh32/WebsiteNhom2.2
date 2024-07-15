@@ -46,11 +46,11 @@ public class ProductController {
         productService.createProduct(createProduct);
         return ResponseEntity.ok("Thêm sản phẩm thành công");
     }
-//    @PutMapping("/update-product/{id}")
-//    public ResponseEntity<?> updateProduct(@PathVariable int id,@RequestBody UpdateProduct updateProduct) throws Exception {
-//        productService.updateProduct(id,updateProduct);
-//        return ResponseEntity.ok("Update sản phẩm thành công");
-//    }
+    @PutMapping("/update-product/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable int id,@RequestBody UpdateProduct updateProduct) throws Exception {
+        productService.updateProduct(id,updateProduct);
+        return ResponseEntity.ok("Update sản phẩm thành công");
+    }
     @DeleteMapping("/delete-product/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable("id") int id){
         productService.deleteProduct(id);

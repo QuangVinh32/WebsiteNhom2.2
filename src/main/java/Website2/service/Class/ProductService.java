@@ -1,5 +1,6 @@
 package Website2.service.Class;
 
+import Website2.model.DTO.ProductDTO;
 import Website2.model.DTO.ProductDTOv2;
 
 import Website2.model.entity.Product;
@@ -69,6 +70,8 @@ public class ProductService implements IProductService {
         reviewsDTO.setRate(reviews.getRate());
         if (reviews.getUser() !=null){
             reviewsDTO.setUsers(ProductDTOv2.ReviewsDTO.UsersDTO.convertToDto(reviews.getUser()));
+
+
 
         }
         return reviewsDTO;

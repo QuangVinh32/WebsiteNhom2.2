@@ -31,7 +31,6 @@ public class ProductDTOv2 extends RepresentationModel<ProductDTOv2> {
     public static class ReviewsDTO extends RepresentationModel<ReviewsDTO> {
         private String content;
         private int rate;
-
         private UsersDTO users;
 //
 ////        private List<Website2.model.DTO.UsersDTO> users;
@@ -42,9 +41,11 @@ public class ProductDTOv2 extends RepresentationModel<ProductDTOv2> {
 
       public static class UsersDTO extends RepresentationModel<UsersDTO> {
          private String fullName;
+         private String image;
          public static UsersDTO convertToDto(Users users){
              UsersDTO usersDTO = new UsersDTO();
              usersDTO.setFullName(users.getFullName());
+             usersDTO.setImage(users.getImage());
              return usersDTO;
          }
     }

@@ -1,6 +1,4 @@
 package Website2.controller;
-
-
 import Website2.model.DTO.CartDTO;
 import Website2.model.entity.Cart;
 import Website2.model.request.CreateCart;
@@ -11,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
