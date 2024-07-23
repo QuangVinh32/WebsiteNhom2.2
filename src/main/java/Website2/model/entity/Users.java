@@ -21,16 +21,16 @@ public class Users {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "phone", nullable = false, unique = true)
+    @Column(name = "phone", unique = true)
     private String phone;
 
     @Column(name = "fullName")
     private String fullName;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 //    add imgame
-    @Column(name = "image", nullable = false, unique = true)
+    @Column(name = "image", unique = true)
     private String image;
 
     @Enumerated(EnumType.STRING)

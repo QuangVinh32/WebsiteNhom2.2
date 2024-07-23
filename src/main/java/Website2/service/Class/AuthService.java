@@ -31,6 +31,7 @@ public class AuthService implements IAuthService {
         Users user =mapper.map(form, Users.class);
         String encodedPassword = encoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
+        user.setRole(Users.Role.USER);
         repository.save(user);
     }
 
