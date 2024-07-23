@@ -1,13 +1,12 @@
 package Website2.service.Class;
 
-import Website2.model.DTO.ProductDTO;
 import Website2.model.DTO.ProductDTOv2;
-
-import Website2.model.entity.Product;
-import Website2.model.entity.Reviews;
+import Website2.model.entity.*;
 import Website2.model.request.CreateProduct;
 import Website2.model.request.FilterProduct;
 import Website2.model.request.UpdateProduct;
+import Website2.repository.CategoryRepository;
+import Website2.repository.NsxRepository;
 import Website2.repository.ProductRepository;
 import Website2.service.IProductService;
 import Website2.speacification.ProductSpecification;
@@ -17,34 +16,44 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductService implements IProductService {
+
     @Autowired
     private ModelMapper mapper;
+
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private NsxRepository nsxRepository;
+
     @Override
     public List<Product> getAllProducts() {
-        return productRepository.findAll() ;
+        return productRepository.findAll();
     }
 
     @Override
-    public Page<Product> getAllProductsPage(Pageable pageable,FilterProduct filterProduct) {
+    public Page<Product> getAllProductsPage(Pageable pageable, FilterProduct filterProduct) {
         Specification<Product> spec = ProductSpecification.buildSpec(filterProduct);
-        return productRepository.findAll(spec,pageable);
+        return productRepository.findAll(spec, pageable);
     }
+
     @Override
     public ProductDTOv2 getProductById(int id) {
         Optional<Product> product = productRepository.findById(id);
         return product.map(this::convertToDto).orElse(null);
     }
 
-
-    private ProductDTOv2 convertToDto(Product product){
+    private ProductDTOv2 convertToDto(Product product) {
         ProductDTOv2 productDTO = new ProductDTOv2();
         productDTO.setProductId(product.getProductId());
         productDTO.setProductCode(product.getProductCode());
@@ -57,46 +66,66 @@ public class ProductService implements IProductService {
         productDTO.setCreatedTime(product.getCreateTime());
         productDTO.setSoLuongTonKho(product.getSoLuongTonKho());
 
+//        // Set category and nsx objects
+//        productDTO.setCategoryId(product.getCategory());
+//        productDTO.setNsxId(product.getNsx());
+
         List<ProductDTOv2.ReviewsDTO> reviewsDTOS = product.getReviews().stream()
-                        .map(this::reviewsDTO)
+                .map(this::reviewsDTO)
                 .collect(Collectors.toList());
         productDTO.setReviews(reviewsDTOS);
         return productDTO;
     }
 
-    private ProductDTOv2.ReviewsDTO reviewsDTO(Reviews reviews){
+    private ProductDTOv2.ReviewsDTO reviewsDTO(Reviews reviews) {
         ProductDTOv2.ReviewsDTO reviewsDTO = new ProductDTOv2.ReviewsDTO();
         reviewsDTO.setContent(reviews.getContent());
         reviewsDTO.setRate(reviews.getRate());
-        if (reviews.getUser() !=null){
+        reviewsDTO.setCreateTimeReview(reviews.getCreateTimeReview());
+        if (reviews.getUser() != null) {
             reviewsDTO.setUsers(ProductDTOv2.ReviewsDTO.UsersDTO.convertToDto(reviews.getUser()));
-
-
-
         }
         return reviewsDTO;
     }
 
-
     @Override
     public void createProduct(CreateProduct createProduct) throws Exception {
         Product productDb = mapper.map(createProduct, Product.class);
+
+        // Find category by categoryId
+        Category category = categoryRepository.findById(createProduct.getCategoryId())
+                .orElseThrow(() -> new Exception("Category with ID " + createProduct.getCategoryId() + " not found"));
+        productDb.setCategory(category);
+
+        // Find nsx by nsxId
+        Nsx nsx = nsxRepository.findById(createProduct.getNsxId())
+                .orElseThrow(() -> new Exception("Nsx with ID " + createProduct.getNsxId() + " not found"));
+        productDb.setNsx(nsx);
+
         productRepository.save(productDb);
-
     }
-
 
     @Override
     public Product updateProduct(int productId, UpdateProduct updateProduct) throws Exception {
-        ProductDTOv2 productDb = getProductById(productId);
-        if (productDb != null) {
-            Product existingProduct = productRepository.findById(productId)
-                    .orElseThrow(() -> new Exception("Product không tìm thấy id"));
-            mapper.map(updateProduct, existingProduct);
-            return productRepository.save(existingProduct);
-        } else {
-            throw new Exception("Product không tìm thấy id");
+        Product existingProduct = productRepository.findById(productId)
+                .orElseThrow(() -> new Exception("Product with ID " + productId + " not found"));
+
+        mapper.map(updateProduct, existingProduct);
+
+        // Find category by categoryId if present in updateProduct
+        if (updateProduct.getCategoryId() != null) {
+            Category category = categoryRepository.findById(updateProduct.getCategoryId())
+                    .orElseThrow(() -> new Exception("Category with ID " + updateProduct.getCategoryId() + " not found"));
+            existingProduct.setCategory(category);
         }
+
+        // Find nsx by nsxId if present in updateProduct
+        if (updateProduct.getNsxId() != null) {
+            Nsx nsx = nsxRepository.findById(updateProduct.getNsxId())
+                    .orElseThrow(() -> new Exception("Nsx with ID " + updateProduct.getNsxId() + " not found"));
+            existingProduct.setNsx(nsx);
+        }
+        return productRepository.save(existingProduct);
     }
 
     @Override
@@ -106,11 +135,11 @@ public class ProductService implements IProductService {
 
     @Override
     public boolean isProductNameExists(String productName) {
-        return false;
+        return false; // Implement as needed
     }
 
     @Override
     public List<Product> getAllProductByTypeId(Integer typeId) {
-        return null;
+        return null; // Implement as needed
     }
 }

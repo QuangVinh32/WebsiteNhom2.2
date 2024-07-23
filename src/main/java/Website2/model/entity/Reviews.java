@@ -1,7 +1,10 @@
 package Website2.model.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -19,9 +22,9 @@ public class Reviews {
     private int rate;
 
 //    add ngày tạo
-//    @Column(name = "createReview")
-//    private Date createReview;
-
+    @Column(name = "create_time_review", columnDefinition = "TIMESTAMP")
+    @CreationTimestamp
+    private LocalDateTime createTimeReview;
 
     @ManyToOne
     @MapsId("userId")

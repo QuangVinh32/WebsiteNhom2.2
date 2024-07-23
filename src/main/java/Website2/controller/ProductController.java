@@ -57,10 +57,17 @@ public class ProductController {
         return ResponseEntity.ok("Xóa Sản phẩm thành công");
     }
     @GetMapping("/find-by-id/{id}")
-    public ProductDTOv2 findProductById(@PathVariable("id") int id) {
-     return  productService.getProductById(id);
-
+    public ResponseEntity<ProductDTOv2> findProductById(@PathVariable("id") int id) {
+        System.out.println("Fetching product with ID: " + id); // Log the ID being queried
+        ProductDTOv2 productDTO = productService.getProductById(id);
+        if (productDTO != null) {
+            return ResponseEntity.ok(productDTO);
+        } else {
+            System.out.println("Product with ID " + id + " not found"); // Log if not found
+            return ResponseEntity.notFound().build();
+        }
     }
+
     @GetMapping("/find-by-typeid/{id}")
     public ProductDTO getAllProductByTypeId(@PathVariable("id") int id ){
         List<Product> product = productService.getAllProductByTypeId(id);

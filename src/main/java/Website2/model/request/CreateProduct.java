@@ -1,11 +1,14 @@
 package Website2.model.request;
 
+
+import Website2.model.entity.NsxRole;
 import Website2.model.entity.ProductStatus;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 @Data
-public class CreateProduct {
+public class CreateProduct implements Serializable {
     private int productId;
     private int productCode;
     private String productName;
@@ -16,4 +19,7 @@ public class CreateProduct {
     private ProductStatus status;
     private LocalDateTime createdTime;
     private int soLuongTonKho;
+    private int nsxId;
+    private int categoryId;
+
 }

@@ -30,7 +30,6 @@ public class CartController {
         List<CartDTO> cartDTOS = carts.stream()
                 .map(hoaDon -> mapper.map(carts, CartDTO.class))
                 .collect(Collectors.toList());
-
         return cartDTOS;
     }
     @PostMapping("/create-cart")

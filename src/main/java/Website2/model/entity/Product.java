@@ -2,6 +2,7 @@ package Website2.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -39,6 +40,7 @@ public class Product {
     private ProductStatus status;
 
     @Column(name = "createTime", nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDateTime createTime;
 
     @Column(name = "soLuongTonKho", nullable = false)
@@ -61,4 +63,6 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<CartDetail> cartDetails;
+
+
 }

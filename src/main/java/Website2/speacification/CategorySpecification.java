@@ -23,7 +23,7 @@ public class CategorySpecification {
                 List<Predicate> predicates = new ArrayList<>();
                 //Filter by Category name
                 if (StringUtils.hasText(form.getSearch())){
-                    predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("typeName"), "%" + form.getSearch()+ "%"
+                    predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("categoryName"), "%" + form.getSearch()+ "%"
                     )
                     )
                     );

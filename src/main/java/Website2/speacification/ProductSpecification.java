@@ -45,6 +45,14 @@ public class ProductSpecification {
                     query.orderBy(builder.desc(root.get("price")));
                 }
 
+                if (form.getCategoryId() != null) {
+                    predicates.add(builder.equal(root.get("category").get("categoryId"), form.getCategoryId()));
+                }
+
+                if (form.getTypeNsx() != null) {
+                    predicates.add(builder.equal(root.get("nsx").get("nsxRole"), form.getTypeNsx()));
+                }
+
                 return builder.and(predicates.toArray(new Predicate[0]));
             }
         };

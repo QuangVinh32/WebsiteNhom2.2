@@ -15,9 +15,12 @@ public class Nsx {
 //    @Column(name = "description")
 //    private String description;
     @Column(name = "role")
-    private NsxRole role;
+    @Enumerated(EnumType.STRING) // Sử dụng EnumType.STRING để lưu trữ giá trị của Enum dưới dạng chuỗi
+    private NsxRole nsxRole;
     @OneToMany(mappedBy = "nsx", cascade = CascadeType.ALL)
     private List<Product> products;
+
+
 //  Type = asus,lenovo,hp,dell,acer,macbook
 
 }

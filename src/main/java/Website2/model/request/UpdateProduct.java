@@ -15,4 +15,6 @@ public class UpdateProduct {
     private String image;
     private ProductStatus status;
     private int soLuongTonKho;
+    private Integer nsxId;
+    private Integer categoryId;
 }

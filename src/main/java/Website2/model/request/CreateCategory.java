@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class CreateCategory {
 
-    private String typeName;
+    private String categoryName;
     private String description;
 }
