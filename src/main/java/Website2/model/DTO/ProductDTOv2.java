@@ -23,8 +23,8 @@ public class ProductDTOv2 extends RepresentationModel<ProductDTOv2> {
     private LocalDateTime createdTime;
     private int soLuongTonKho;
     private List<ReviewsDTO> reviews;
-    private Category categoryId;
-    private Nsx nsxId;
+    private Integer categoryId;
+    private Integer nsxId;
     @Getter
     @Setter
     @AllArgsConstructor
