@@ -1,6 +1,8 @@
 package Website2.controller;
 
+import Website2.model.DTO.CartDTO;
 import Website2.model.DTO.OrderDTO;
+import Website2.model.entity.Cart;
 import Website2.model.entity.Order;
 import Website2.model.request.CreateOrder;
 import Website2.model.Filter.FilterOrder;
@@ -13,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/order")
@@ -34,11 +38,11 @@ public class OrderController {
 //
 //        return orderDTOS;
 //    }
-@GetMapping("/find-all-order")
-public Page<OrderDTO> findAllOrderPage(Pageable pageable, FilterOrder filterOrder) {
+    @GetMapping("/find-all-order")
+    public Page<OrderDTO> findAllOrderPage(Pageable pageable, FilterOrder filterOrder) {
     Page<Order> orderPage = orderService.getAllOrdersPage(pageable,filterOrder);
     return orderPage.map(order -> mapper.map(order, OrderDTO.class));
-}
+    }
 
     @PostMapping("/create-order")
     public ResponseEntity<?> createOrder(@RequestBody CreateOrder createOrder) throws Exception {
@@ -55,4 +59,9 @@ public Page<OrderDTO> findAllOrderPage(Pageable pageable, FilterOrder filterOrde
         orderService.deleteOrder(id);
         return ResponseEntity.ok("Xóa đơn hàng thàng công");
     }
-}
+    @GetMapping("/find-order/{id}")
+    public OrderDTO findOrderByOrderId(@PathVariable("id")Integer orderId){
+        Optional<Order> order = orderService.getOrderById(orderId);
+        return mapper.map(order, OrderDTO.class);
+    }
+ }

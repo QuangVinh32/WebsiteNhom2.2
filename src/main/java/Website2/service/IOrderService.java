@@ -18,7 +18,7 @@ public interface IOrderService {
 
     Page<Order> getAllOrdersPage(Pageable pageable, FilterOrder filterOrder);
 
-    Optional<Order> getProductById(int id);
+    Optional<Order> getOrderById(int orderId);
 
     void createOrder(CreateOrder createOrder) throws Exception;
 

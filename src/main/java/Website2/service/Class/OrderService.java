@@ -35,8 +35,8 @@ public class OrderService implements IOrderService {
 
 
     @Override
-    public Optional<Order> getProductById(int id) {
-        return orderRepository.findById(id);
+    public Optional<Order> getOrderById(int orderId) {
+        return orderRepository.findById(orderId);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public Order updateOrder(int orderID, UpdateOrder updateOrder) throws Exception {
-        Optional<Order> orderDb = getProductById(orderID);
+        Optional<Order> orderDb = getOrderById(orderID);
         if (orderDb.isPresent()){
             Order existingOrder = orderDb.get();
             mapper.map(updateOrder, existingOrder);
