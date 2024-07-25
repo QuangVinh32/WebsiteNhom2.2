@@ -1,9 +1,7 @@
 package Website2.speacification;
 
-import Website2.model.entity.Product;
 import Website2.model.entity.Users;
-import Website2.model.request.FilterProduct;
-import Website2.model.request.FilterUser;
+import Website2.model.Filter.FilterUser;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 

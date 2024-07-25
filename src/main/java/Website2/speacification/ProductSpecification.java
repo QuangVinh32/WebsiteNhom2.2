@@ -1,6 +1,6 @@
 package Website2.speacification;
 import Website2.model.entity.Product;
-import Website2.model.request.FilterProduct;
+import Website2.model.Filter.FilterProduct;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 import javax.persistence.criteria.CriteriaBuilder;

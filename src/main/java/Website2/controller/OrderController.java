@@ -1,12 +1,9 @@
 package Website2.controller;
 
 import Website2.model.DTO.OrderDTO;
-import Website2.model.DTO.ProductDTO;
 import Website2.model.entity.Order;
-import Website2.model.entity.Product;
 import Website2.model.request.CreateOrder;
-import Website2.model.request.FilterOrder;
-import Website2.model.request.FilterProduct;
+import Website2.model.Filter.FilterOrder;
 import Website2.model.request.UpdateOrder;
 import Website2.service.IOrderService;
 import org.modelmapper.ModelMapper;
@@ -16,9 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/order")

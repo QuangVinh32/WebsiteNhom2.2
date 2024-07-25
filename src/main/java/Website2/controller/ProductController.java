@@ -3,7 +3,7 @@ import Website2.model.DTO.ProductDTO;
 import Website2.model.DTO.ProductDTOv2;
 import Website2.model.entity.Product;
 import Website2.model.request.CreateProduct;
-import Website2.model.request.FilterProduct;
+import Website2.model.Filter.FilterProduct;
 import Website2.model.request.UpdateProduct;
 import Website2.service.IProductService;
 import org.modelmapper.ModelMapper;
@@ -14,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/product")

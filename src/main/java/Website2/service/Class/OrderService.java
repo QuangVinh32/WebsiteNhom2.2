@@ -1,7 +1,7 @@
 package Website2.service.Class;
 import Website2.model.entity.Order;
 import Website2.model.request.CreateOrder;
-import Website2.model.request.FilterOrder;
+import Website2.model.Filter.FilterOrder;
 import Website2.model.request.UpdateOrder;
 import Website2.repository.OrderRepository;
 import Website2.service.IOrderService;

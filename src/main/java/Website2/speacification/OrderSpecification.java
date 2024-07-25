@@ -1,9 +1,7 @@
 package Website2.speacification;
 
-import Website2.model.entity.Category;
 import Website2.model.entity.Order;
-import Website2.model.request.FilterCategory;
-import Website2.model.request.FilterOrder;
+import Website2.model.Filter.FilterOrder;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
@@ -23,21 +21,20 @@ public class OrderSpecification {
             @Override
             public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
-
                 if (StringUtils.hasText(form.getSearch())){
-                    predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("typeName"), "%" + form.getSearch()+ "%"
+                    predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("adress"), "%" + form.getSearch()+ "%"
                                     )
                             )
                     );
                 }
-                if(form.getMinId() != null){
+                if(form.getMinOrderId() != null){
                     predicates.add(criteriaBuilder.greaterThanOrEqualTo(
-                            root.get("id"), form.getMinId()
+                            root.get("id"), form.getMinOrderId()
                     ));
                 }
-                if (form.getMaxId() != null) {
+                if (form.getMaxOrderId() != null) {
                     predicates.add(criteriaBuilder.lessThanOrEqualTo(
-                            root.get("id"), form.getMaxId()
+                            root.get("id"), form.getMaxOrderId()
                     ));
                 }
                 if (form.getMinTotal() != null) {

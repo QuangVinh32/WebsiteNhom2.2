@@ -37,16 +37,16 @@ public class NsxController {
     @PostMapping("/create-nsx")
     public ResponseEntity<?> createNsx(@RequestBody CreateNsx createNsx) throws Exception {
         nsxService.createNsx(createNsx);
-        return ResponseEntity.ok("Thêm đơn hàng thành công");
+        return ResponseEntity.ok("Thêm nhà sản xuất thành công");
     }
     @PutMapping("/update-nsx/{id}")
     public ResponseEntity<?> updateNsx(@PathVariable int id,@RequestBody UpdateNsx updateNsx) throws Exception {
         nsxService.updateNsx(id,updateNsx);
-        return ResponseEntity.ok("Sửa đơn hàng thành công");
+        return ResponseEntity.ok("Sửa nhà sản xuất thành công");
     }
     @DeleteMapping("/delete-nsx/{id}")
     public ResponseEntity<?> deleteNsx(@PathVariable("id") int id){
         nsxService.deleteByNsxId(id);
-        return ResponseEntity.ok("Xóa đơn hàng thàng công");
+        return ResponseEntity.ok("Xóa nhà sản xuất thàng công");
     }
 }

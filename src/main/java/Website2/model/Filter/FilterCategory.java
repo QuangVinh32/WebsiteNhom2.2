@@ -1,4 +1,4 @@
-package Website2.model.request;
+package Website2.model.Filter;
 
 import io.swagger.models.auth.In;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package Website2.model.request;
+package Website2.model.Filter;
 
 import lombok.Data;
 
@@ -7,8 +7,8 @@ import java.util.PrimitiveIterator;
 @Data
 public class FilterOrder {
     private String search;
-    private Integer minId;
-    private Integer maxId;
+    private Integer minOrderId;
+    private Integer maxOrderId;
     private Integer minTotal;
     private Integer maxTotal;
     private Boolean  idAsc;

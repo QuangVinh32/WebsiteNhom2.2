@@ -1,7 +1,7 @@
 package Website2.speacification;
 
 import Website2.model.entity.Category;
-import Website2.model.request.FilterCategory;
+import Website2.model.Filter.FilterCategory;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
