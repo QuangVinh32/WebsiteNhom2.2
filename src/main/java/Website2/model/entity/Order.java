@@ -16,8 +16,14 @@ public class Order {
     @Column(name = "total")
     private int total;
 
-    @Column(name = "address")
+    @Column(name = "fullName",nullable = false)
+    private String fullName;
+
+    @Column(name = "address",nullable = false)
     private String address;
+
+    @Column(name = "phone",nullable = false)
+    private int phone;
 
     @Column(name = "order_date")
     private Date orderDate;
@@ -26,7 +32,7 @@ public class Order {
     private Date saleDate;
 
     @Column(name = "status")
-    @Enumerated(EnumType.STRING) // Sử dụng EnumType.STRING để lưu trữ giá trị của Enum dưới dạng chuỗi
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @Column(name = "note")

@@ -7,6 +7,8 @@ import java.util.Date;
 @Data
 public class UpdateOrder {
     private int total;
+    private String fullName;
+    private int phone;
     private String address;
     private Date orderDate;
     private Date saleDate;

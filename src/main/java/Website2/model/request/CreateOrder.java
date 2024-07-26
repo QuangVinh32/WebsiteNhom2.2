@@ -9,7 +9,9 @@ import java.util.Date;
 public class CreateOrder {
     private int orderId;
     private int total;
+    private String fullName;
     private String address;
+    private int phone;
     private Date orderDate;
     private Date saleDate;
     private OrderStatus status;

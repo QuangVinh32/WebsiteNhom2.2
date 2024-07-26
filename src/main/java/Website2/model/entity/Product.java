@@ -35,6 +35,9 @@ public class Product {
     @Column(name = "image", nullable = false)
     private String image;
 
+    @Column(name = "featured", nullable = false)
+    private boolean featured;
+
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private ProductStatus status;

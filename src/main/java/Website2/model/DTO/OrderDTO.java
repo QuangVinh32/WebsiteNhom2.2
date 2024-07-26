@@ -8,16 +8,12 @@ import java.util.Date;
 @Data
 public class OrderDTO {
     private Integer orderId;
-
     private int total;
-
+    private String fullName;
     private String address;
-
+    private int phone;
     private Date orderDate;
-
     private Date saleDate;
-
     private OrderStatus status;
-
     private String note;
 }
