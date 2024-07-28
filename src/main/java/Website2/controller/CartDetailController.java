@@ -1,5 +1,4 @@
 package Website2.controller;
-
 import Website2.model.DTO.CartDetailDTO;
 import Website2.model.entity.CartDetail;
 import Website2.model.request.CreateCartDetail;
@@ -11,11 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @RestController
 @RequestMapping("api/v1/cartdetail")
 @CrossOrigin("*")

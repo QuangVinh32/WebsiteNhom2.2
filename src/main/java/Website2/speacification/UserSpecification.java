@@ -1,19 +1,14 @@
 package Website2.speacification;
-
-import Website2.model.entity.Product;
 import Website2.model.entity.Users;
-import Website2.model.request.FilterProduct;
 import Website2.model.request.FilterUser;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
-
 public class UserSpecification {
     public static Specification<Users> buildSpec(FilterUser form) {
         if (form == null) {

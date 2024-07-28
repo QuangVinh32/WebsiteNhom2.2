@@ -21,23 +21,28 @@ public class OrderSpecification {
         }
         return new Specification<Order>() {
             @Override
-            public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+            public Predicate toPredicate(Root<Order> root,
+                                         CriteriaQuery<?> query,
+                                         CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
 
                 if (StringUtils.hasText(form.getSearch())){
-                    predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("typeName"), "%" + form.getSearch()+ "%"
-                                    )
+                    predicates.add(criteriaBuilder.or(
+                            criteriaBuilder.like(root.get("fullName"), "%" + form.getSearch()+ "%"
+                            ),
+                            criteriaBuilder.like(root.get("address"), "%" + form.getSearch()+ "%"
+                            )
                             )
                     );
                 }
                 if(form.getMinId() != null){
                     predicates.add(criteriaBuilder.greaterThanOrEqualTo(
-                            root.get("id"), form.getMinId()
+                            root.get("orderId"), form.getMinId()
                     ));
                 }
                 if (form.getMaxId() != null) {
                     predicates.add(criteriaBuilder.lessThanOrEqualTo(
-                            root.get("id"), form.getMaxId()
+                            root.get("orderId"), form.getMaxId()
                     ));
                 }
                 if (form.getMinTotal() != null) {
@@ -49,10 +54,10 @@ public class OrderSpecification {
                 }
                 // Add sorting
                 if (form.getIdAsc() != null && form.getIdAsc()) {
-                    query.orderBy(criteriaBuilder.asc(root.get("id")));
+                    query.orderBy(criteriaBuilder.asc(root.get("orderId")));
                 }
                 if (form.getIdDesc() != null && form.getIdDesc()) {
-                    query.orderBy(criteriaBuilder.desc(root.get("id")));
+                    query.orderBy(criteriaBuilder.desc(root.get("orderId")));
                 }
                 // Add sorting
                 if (form.getTotalAsc() != null && form.getTotalAsc()) {

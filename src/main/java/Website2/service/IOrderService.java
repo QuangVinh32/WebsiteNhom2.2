@@ -1,5 +1,6 @@
 package Website2.service;
 
+import Website2.model.DTO.OrderDTO;
 import Website2.model.entity.Order;
 import Website2.model.entity.Product;
 import Website2.model.request.CreateOrder;
@@ -20,7 +21,7 @@ public interface IOrderService {
 
     Page<Order> getAllOrdersPage(Pageable pageable, FilterOrder filterOrder);
 
-    Optional<Order> getProductById(int id);
+    OrderDTO getOrderById(int id);
 
     void createOrder(CreateOrder createOrder) throws Exception;
 

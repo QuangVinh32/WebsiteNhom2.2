@@ -1,17 +1,14 @@
 package Website2.speacification;
-
 import Website2.model.entity.Category;
 import Website2.model.request.FilterCategory;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
-
 public class CategorySpecification {
     public static Specification<Category> buildSpec(FilterCategory form){
         if (form == null){
@@ -31,20 +28,20 @@ public class CategorySpecification {
                 // Filter by category Id
                 if(form.getMinId() != null){
                     predicates.add(criteriaBuilder.greaterThanOrEqualTo(
-                            root.get("id"), form.getMinId()
+                            root.get("categoryId"), form.getMinId()
                     ));
                 }
                 if (form.getMaxId() != null) {
                     predicates.add(criteriaBuilder.lessThanOrEqualTo(
-                            root.get("id"), form.getMaxId()
+                            root.get("categoryId"), form.getMaxId()
                     ));
                 }
                 // Add sorting
                 if (form.getIdAsc() != null && form.getIdAsc()) {
-                    query.orderBy(criteriaBuilder.asc(root.get("Id")));
+                    query.orderBy(criteriaBuilder.asc(root.get("categoryId")));
                 }
                 if (form.getIdDesc() != null && form.getIdDesc()) {
-                    query.orderBy(criteriaBuilder.desc(root.get("Id")));
+                    query.orderBy(criteriaBuilder.desc(root.get("categoryId")));
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             }

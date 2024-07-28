@@ -40,11 +40,16 @@ public class OrderController {
 //
 //        return orderDTOS;
 //    }
-@GetMapping("/find-all-order")
+@GetMapping("/find-all-order")//  don hang 1(ngu mua, ng ban , thoi gian mua, tong so tien),    chi tiet don hang oerdetail_ 1a 1b 1c(ten sp, sl, don gia, ...)
 public Page<OrderDTO> findAllOrderPage(Pageable pageable, FilterOrder filterOrder) {
     Page<Order> orderPage = orderService.getAllOrdersPage(pageable,filterOrder);
     return orderPage.map(order -> mapper.map(order, OrderDTO.class));
 }
+
+    @GetMapping("/find-order-by-id")//  don hang 1(ngu mua, ng ban , thoi gian mua, tong so tien),    chi tiet don hang oerdetail_ 1a 1b 1c(ten sp, sl, don gia, ...)
+    public OrderDTO findById(@RequestParam int id) {
+        return orderService.getOrderById(id);
+    }
 
     @PostMapping("/create-order")
     public ResponseEntity<?> createOrder(@RequestBody CreateOrder createOrder) throws Exception {

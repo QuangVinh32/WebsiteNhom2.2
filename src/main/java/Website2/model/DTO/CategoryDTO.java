@@ -13,6 +13,4 @@ public class CategoryDTO {
     private String categoryName;
 
     private String Description;
-
-//    private List<Product> products;
 }

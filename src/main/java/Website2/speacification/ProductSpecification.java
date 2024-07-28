@@ -15,7 +15,6 @@ public class ProductSpecification {
         if (form == null) {
             return null;
         }
-
         return new Specification<Product>() {
             @Override
             public Predicate toPredicate(Root<Product> root,
