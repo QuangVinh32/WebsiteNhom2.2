@@ -1,9 +1,7 @@
 package Website2.model.DTO;
 
-import Website2.model.entity.Product;
+import Website2.model.entity.Category;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class CategoryDTO {
@@ -13,4 +11,7 @@ public class CategoryDTO {
     private String categoryName;
 
     private String Description;
+    public CategoryDTO(Category category) {
+        this.categoryId = category.getCategoryId();
+    }
 }

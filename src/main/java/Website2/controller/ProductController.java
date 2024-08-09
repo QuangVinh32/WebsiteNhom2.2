@@ -1,6 +1,7 @@
 package Website2.controller;
 import Website2.model.DTO.ProductDTO;
 import Website2.model.DTO.ProductDTOv2;
+import Website2.model.DTO.ProductDTOv3;
 import Website2.model.entity.Product;
 import Website2.model.request.CreateProduct;
 import Website2.model.request.FilterProduct;
@@ -14,8 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
+
 
 @RestController
 @RequestMapping("/api/v1/product")
@@ -26,19 +27,11 @@ public class ProductController {
     private IProductService productService;
     @Autowired
     private ModelMapper mapper;
-//
-//    @GetMapping("/find-all-product")
-//    public List<ProductDTO> findAllPhong() {
-//        List<Product> phongs = productService.getAllProducts();
-//        List<ProductDTO> productDTOS = phongs.stream()
-//                .map(phong -> mapper.map(phong, ProductDTO.class))
-//                .collect(Collectors.toList());
-//        return productDTOS;
-//    }
+
      @GetMapping("/find-all-product")
-     public Page<ProductDTO> findAllProductPage(Pageable pageable, FilterProduct filterProduct) {
+     public Page<ProductDTOv3> findAllProductPage(Pageable pageable, FilterProduct filterProduct) {
             Page<Product> productsPage = productService.getAllProductsPage(pageable,filterProduct);
-            return productsPage.map(product -> mapper.map(product, ProductDTO.class));
+            return productsPage.map(product -> mapper.map(product, ProductDTOv3.class));
 }
 
     @PostMapping("/create-product")
@@ -56,14 +49,28 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.ok("Xóa Sản phẩm thành công");
     }
+
     @GetMapping("/find-by-id/{id}")
     public ResponseEntity<ProductDTOv2> findProductById(@PathVariable("id") int id) {
-        System.out.println("Fetching product with ID: " + id); // Log the ID being queried
-        ProductDTOv2 productDTO = productService.getProductById(id);
+        System.out.println("Fetching product with ID: " + id);
+        ProductDTOv2 productDTOv2 = productService.getProductById(id);
+        if (productDTOv2 != null) {
+            return ResponseEntity.ok(productDTOv2);
+        } else {
+            System.out.println("Product with ID " + id + " not found");
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @GetMapping("/find-by-id/v1/{id}")
+    public ResponseEntity<ProductDTO> findProductByIdOld(@PathVariable("id") int id) {
+        System.out.println("Fetching product with ID: " + id);
+
+        ProductDTO productDTO = productService.getProductByIdOld(id);
+
         if (productDTO != null) {
             return ResponseEntity.ok(productDTO);
         } else {
-            System.out.println("Product with ID " + id + " not found"); // Log if not found
+            System.out.println("Product with ID " + id + " not found");
             return ResponseEntity.notFound().build();
         }
     }

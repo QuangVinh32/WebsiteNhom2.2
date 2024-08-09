@@ -22,7 +22,6 @@ public class OrderDTO {
     private Date saleDate;
     private OrderStatus status;
     private String note;
-
     private List<OrderDetailDTO> orderDetailDTOS;
 
     public OrderDTO(Order order, List<OrderDetail> orderDetails) {
@@ -36,8 +35,8 @@ public class OrderDTO {
         this.status = order.getStatus();
 
         this.orderDetailDTOS = new ArrayList<>();
-        for (OrderDetail od: orderDetails) {
-            this.orderDetailDTOS.add(new OrderDetailDTO(od));
+        for (OrderDetail orderDetail: orderDetails) {
+            this.orderDetailDTOS.add(new OrderDetailDTO(orderDetail));
         }
     }
 }

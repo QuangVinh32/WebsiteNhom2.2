@@ -1,12 +1,13 @@
-package Website2.model.request;
+package Website2.model.DTO;
+
 import Website2.model.entity.ProductStatus;
 import lombok.Data;
-import java.io.Serializable;
+
 import java.time.LocalDateTime;
 @Data
-public class CreateProduct implements Serializable {
+public class ProductDTOv3 {
     private int productId;
-    private int productCode;
+    private String productCode;
     private String productName;
     private String descriptionProduct;
     private int price;
@@ -15,7 +16,4 @@ public class CreateProduct implements Serializable {
     private ProductStatus status;
     private LocalDateTime createdTime;
     private int soLuongTonKho;
-    private Integer nsxId;
-    private Integer categoryId;
-
 }

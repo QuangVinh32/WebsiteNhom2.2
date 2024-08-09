@@ -49,15 +49,25 @@ public class Product {
     @Column(name = "soLuongTonKho", nullable = false)
     private int soLuongTonKho;
 
-    @ManyToOne
-    @JoinColumn(name = "nsxId")
+    // Cột lưu nsxId
+    // Cách mới đẩy thông tin vào cột được tạo vào
+    @Column(name = "nsxId")
+    private Integer nsxId;
+
+    // Cột lưu categoryId
+    // Cách mới đẩy thông tin vào cột được tạo vào
+    @Column(name = "categoryId")
+    private Integer categoryId;
+
+    @ManyToOne()
+    @JoinColumn(name = "nsxId", referencedColumnName = "nsxId", insertable = false, updatable = false)
     private Nsx nsx;
 
     @ManyToOne
-    @JoinColumn(name = "categoryId")
+    @JoinColumn(name = "categoryId", referencedColumnName = "categoryId", insertable = false, updatable = false)
     private Category category;
 
-    @JsonBackReference
+//    @JsonBackReference
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Reviews> reviews;
 
@@ -66,6 +76,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<CartDetail> cartDetails;
+
 
 
 }

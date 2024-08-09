@@ -20,7 +20,6 @@ public class AppException extends RuntimeException {
         this.timeInstant = Instant.now();
     }
 
-
     public AppException(Exception ex) {
         this.code = 500;
         this.message = ex.getMessage();

@@ -31,15 +31,6 @@ public class OrderController {
     @Autowired
     private IOrderService orderService;
 
-//    @GetMapping("/get-all-order")
-//    List<OrderDTO> findAllOrder() {
-//        List<Order> orders = orderService.getAllOrders();
-//        List<OrderDTO> orderDTOS = orders.stream()
-//                .map(order -> mapper.map(order, OrderDTO.class))
-//                .collect(Collectors.toList());
-//
-//        return orderDTOS;
-//    }
 @GetMapping("/find-all-order")//  don hang 1(ngu mua, ng ban , thoi gian mua, tong so tien),    chi tiet don hang oerdetail_ 1a 1b 1c(ten sp, sl, don gia, ...)
 public Page<OrderDTO> findAllOrderPage(Pageable pageable, FilterOrder filterOrder) {
     Page<Order> orderPage = orderService.getAllOrdersPage(pageable,filterOrder);

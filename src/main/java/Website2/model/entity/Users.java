@@ -1,6 +1,5 @@
 package Website2.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -37,11 +36,9 @@ public class Users {
     @Column(name = "role", nullable = false, length = 8)
     private Role role;
 
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Reviews> reviews;
 
-    public enum Role {
-        ADMIN, MANAGER, USER, USER_NS
-    }
+
+
 }

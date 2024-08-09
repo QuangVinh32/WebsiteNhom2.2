@@ -1,7 +1,5 @@
 package Website2.model.entity;
-
 import lombok.Data;
-
 import javax.persistence.*;
 import java.io.Serializable;
 @Data

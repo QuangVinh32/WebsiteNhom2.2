@@ -1,6 +1,6 @@
 package Website2.service.Class;
 
-import Website2.model.DTO.ProductDTOv2;
+import Website2.model.DTO.*;
 import Website2.model.entity.*;
 import Website2.model.request.CreateProduct;
 import Website2.model.request.FilterProduct;
@@ -8,6 +8,7 @@ import Website2.model.request.UpdateProduct;
 import Website2.repository.CategoryRepository;
 import Website2.repository.NsxRepository;
 import Website2.repository.ProductRepository;
+import Website2.repository.ReviewRepository;
 import Website2.service.IProductService;
 import Website2.speacification.ProductSpecification;
 import org.modelmapper.ModelMapper;
@@ -19,6 +20,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,21 +40,41 @@ public class ProductService implements IProductService {
 
     @Autowired
     private NsxRepository nsxRepository;
-//    @PostConstruct
-//    public void configureMapper() {
-//        mapper.addMappings(new PropertyMap<UpdateProduct, Product>() {
-//            @Override
-//            protected void configure() {
-//                skip(destination.getProductId());
-//                skip(destination.getCategory());
-//                skip(destination.getNsx());
-//            }
-//        });
-//    }
-@Override
-public Product updateProduct(int productId, UpdateProduct updateProduct) throws Exception {
-    Product existingProduct = productRepository.findById(productId)
-            .orElseThrow(() -> new Exception("Product with ID " + productId + " not found"));
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Override
+    public void createProduct(CreateProduct createProduct) throws Exception {
+        // Tìm kiếm các thực thể liên quan (Category và Nsx)
+        Category category = categoryRepository.findById(createProduct.getCategoryId())
+                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + createProduct.getCategoryId()));
+
+        Nsx nsx = nsxRepository.findById(createProduct.getNsxId())
+                .orElseThrow(() -> new EntityNotFoundException("Nsx not found with id: " + createProduct.getNsxId()));
+
+        // Tạo mới đối tượng Product và thiết lập các thuộc tính
+        Product product = new Product();
+        product.setProductId(createProduct.getProductId());
+        product.setProductCode(String.valueOf(createProduct.getProductCode()));
+        product.setProductName(createProduct.getProductName());
+        product.setProductDescription(createProduct.getDescriptionProduct());
+        product.setPrice(createProduct.getPrice());
+        product.setDiscount(createProduct.getDiscount());
+        product.setImage(createProduct.getImage());
+        product.setStatus(createProduct.getStatus());
+        product.setCreateTime(LocalDateTime.now());  // Thiết lập thời gian tạo
+        product.setSoLuongTonKho(createProduct.getSoLuongTonKho());
+        product.setCategoryId(category.getCategoryId());
+        product.setNsxId(nsx.getNsxId());
+        // Lưu đối tượng Product vào cơ sở dữ liệu
+        productRepository.save(product);
+    }
+
+   @Override
+    public Product updateProduct(int productId, UpdateProduct updateProduct) throws Exception {
+           Product existingProduct = productRepository.findById(productId)
+                   .orElseThrow(() -> new Exception("Product with ID " + productId + " not found"));
 
     // Thủ công ánh xạ các trường cần thiết từ updateProduct sang existingProduct
     if (updateProduct.getProductName() != null) {
@@ -75,30 +98,20 @@ public Product updateProduct(int productId, UpdateProduct updateProduct) throws 
     if (updateProduct.getSoLuongTonKho() != 0) {
         existingProduct.setSoLuongTonKho(updateProduct.getSoLuongTonKho());
     }
-
     // Tìm và thiết lập category nếu có
     if (updateProduct.getCategoryId() != null) {
         Category category = categoryRepository.findById(updateProduct.getCategoryId())
                 .orElseThrow(() -> new Exception("Category with ID " + updateProduct.getCategoryId() + " not found"));
         existingProduct.setCategory(category);
     }
-
     // Tìm và thiết lập nsx nếu có
     if (updateProduct.getNsxId() != null) {
         Nsx nsx = nsxRepository.findById(updateProduct.getNsxId())
                 .orElseThrow(() -> new Exception("Nsx with ID " + updateProduct.getNsxId() + " not found"));
         existingProduct.setNsx(nsx);
     }
-
     return productRepository.save(existingProduct);
 }
-
-
-    @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
-
     @Override
     public Page<Product> getAllProductsPage(Pageable pageable, FilterProduct filterProduct) {
         Specification<Product> spec = ProductSpecification.buildSpec(filterProduct);
@@ -107,93 +120,56 @@ public Product updateProduct(int productId, UpdateProduct updateProduct) throws 
 
     @Override
     public ProductDTOv2 getProductById(int id) {
-        Optional<Product> product = productRepository.findById(id);
-        return product.map(this::convertToDto).orElse(null);
-    }
+        // Lấy Product theo ID
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
 
-    private ProductDTOv2 convertToDto(Product product) {
-        ProductDTOv2 productDTO = new ProductDTOv2();
-        productDTO.setProductId(product.getProductId());
-        productDTO.setProductCode(product.getProductCode());
-        productDTO.setProductName(product.getProductName());
-        productDTO.setDescriptionProduct(product.getProductDescription());
-        productDTO.setPrice(product.getPrice());
-        productDTO.setDiscount(product.getDiscount());
-        productDTO.setImage(product.getImage());
-        productDTO.setStatus(product.getStatus());
-        productDTO.setCreatedTime(product.getCreateTime());
-        productDTO.setSoLuongTonKho(product.getSoLuongTonKho());
+        // Lấy danh sách Reviews theo productId
+        List<Reviews> reviews = reviewRepository.findByProductId(id);
 
-        // Set category and nsx IDs
-        if (product.getCategory() != null) {
-            productDTO.setCategoryId(product.getCategory().getCategoryId());
-        } else {
-            productDTO.setCategoryId(null);
-        }
-
-        if (product.getNsx() != null) {
-            productDTO.setNsxId(product.getNsx().getId());
-        } else {
-            productDTO.setNsxId(null);
-        }
-
-        List<ProductDTOv2.ReviewsDTO> reviewsDTOS = product.getReviews().stream()
-                .map(this::reviewsDTO)
-                .collect(Collectors.toList());
-        productDTO.setReviews(reviewsDTOS);
-        return productDTO;
-    }
-
-    private ProductDTOv2.ReviewsDTO reviewsDTO(Reviews reviews) {
-        ProductDTOv2.ReviewsDTO reviewsDTO = new ProductDTOv2.ReviewsDTO();
-        reviewsDTO.setContent(reviews.getContent());
-        reviewsDTO.setRate(reviews.getRate());
-        reviewsDTO.setCreateTimeReview(reviews.getCreateTimeReview());
-        if (reviews.getUser() != null) {
-            reviewsDTO.setUsers(ProductDTOv2.ReviewsDTO.UsersDTO.convertToDto(reviews.getUser()));
-        }
-        return reviewsDTO;
+        // Tạo và trả về ProductDTOv2
+        return new ProductDTOv2(product, reviews);
     }
 
     @Override
-    public void createProduct(CreateProduct createProduct) throws Exception {
-        Product productDb = mapper.map(createProduct, Product.class);
+    public ProductDTO getProductByIdOld(int id) {
+        // Tìm sản phẩm theo ID trong cơ sở dữ liệu
+        Optional<Product> optionalProduct = productRepository.findById(id);
 
-        // Find category by categoryId
-        Category category = categoryRepository.findById(createProduct.getCategoryId())
-                .orElseThrow(() -> new Exception("Category with ID " + createProduct.getCategoryId() + " not found"));
-        productDb.setCategory(category);
+        // Kiểm tra nếu sản phẩm có tồn tại
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
 
-        // Find nsx by nsxId
-        Nsx nsx = nsxRepository.findById(createProduct.getNsxId())
-                .orElseThrow(() -> new Exception("Nsx with ID " + createProduct.getNsxId() + " not found"));
-        productDb.setNsx(nsx);
+            // Chuyển đổi từ entity Product sang DTO ProductDTO
+            ProductDTO productDTO = new ProductDTO(product);
+            productDTO.setProductId(product.getProductId());
+            productDTO.setProductCode(Integer.parseInt(product.getProductCode())); // Assuming productCode is String
+            productDTO.setProductName(product.getProductName());
+            productDTO.setDescriptionProduct(product.getProductDescription());
+            productDTO.setPrice(product.getPrice());
+            productDTO.setDiscount(product.getDiscount());
+            productDTO.setImage(product.getImage());
+            productDTO.setStatus(product.getStatus());
+            productDTO.setCreatedTime(product.getCreateTime());
+            productDTO.setSoLuongTonKho(product.getSoLuongTonKho());
 
-        productRepository.save(productDb);
+            // Nếu Product có quan hệ với Nsx và Category, ánh xạ chúng sang DTO tương ứng
+            if (product.getNsx() != null) {
+                NsxDTO nsxDTO = new NsxDTO(product.getNsx());
+                productDTO.setNsxDTO(nsxDTO);
+            }
+
+            if (product.getCategory() != null) {
+                CategoryDTO categoryDTO = new CategoryDTO(product.getCategory());
+                productDTO.setCategoryDTO(categoryDTO);
+            }
+
+            return productDTO; // Trả về ProductDTO
+        } else {
+            return null; // Trả về null nếu không tìm thấy sản phẩm
+        }
     }
 
-//    @Override
-//    public Product updateProduct(int productId, UpdateProduct updateProduct) throws Exception {
-//        Product existingProduct = productRepository.findById(productId)
-//                .orElseThrow(() -> new Exception("Product with ID " + productId + " not found"));
-//
-//        mapper.map(updateProduct, existingProduct);
-//
-//        // Find category by categoryId if present in updateProduct
-//        if (updateProduct.getCategoryId() != null) {
-//            Category category = categoryRepository.findById(updateProduct.getCategoryId())
-//                    .orElseThrow(() -> new Exception("Category with ID " + updateProduct.getCategoryId() + " not found"));
-//            existingProduct.setCategory(category);
-//        }
-//
-//        // Find nsx by nsxId if present in updateProduct
-//        if (updateProduct.getNsxId() != null) {
-//            Nsx nsx = nsxRepository.findById(updateProduct.getNsxId())
-//                    .orElseThrow(() -> new Exception("Nsx with ID " + updateProduct.getNsxId() + " not found"));
-//            existingProduct.setNsx(nsx);
-//        }
-//        return productRepository.save(existingProduct);
-//    }
 
     @Override
     public void deleteProduct(int id) {

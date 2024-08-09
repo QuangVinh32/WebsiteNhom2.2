@@ -46,9 +46,7 @@ public class OrderService implements IOrderService {
         Order order = orderRepository.findById(id).get();
         // lay ra ds order_detail theo order_id o tren
         List<OrderDetail> orderDetails = orderDetailRepository.findByOrderOrderId(id);
-
-
-        return  new OrderDTO(order, orderDetails);
+        return new OrderDTO(order, orderDetails);
     }
 
     @Override

@@ -2,18 +2,19 @@ package Website2.service;
 
 import Website2.model.entity.Reviews;
 import Website2.model.request.CreateReviews;
-import Website2.model.request.PkReviews;
+
 import Website2.model.request.UpdateReviews;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-@Service // or @Component
+@Service
 public interface IReviewService {
     List<Reviews> findAllReviews();
-//    List<Reviews> findByProductId(int productId);
-    Reviews findById(PkReviews pkReviews);
-    void createReviews(CreateReviews createReviews);
-    Reviews updateReviews(UpdateReviews updateReviews);
-    void deleteReviews(PkReviews pkReviews);
+    Optional<Reviews> findById(int id);
+    void createReviews(CreateReviews createReviews) throws Exception;
+    Reviews updateReviews(int id,UpdateReviews updateReviews);
+    void deleteReviews(int id);
+    List<Reviews> findByProductId(int productId);
 }

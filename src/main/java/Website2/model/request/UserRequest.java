@@ -1,4 +1,5 @@
 package Website2.model.request;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,6 @@ public class UserRequest {
     private String username;
 
     @NotBlank(message = "Password is required")
-
     private String password;
 
     @NotBlank(message = "Email is required")
@@ -25,8 +25,10 @@ public class UserRequest {
     @NotBlank(message = "Full name is required")
     private String fullName;
 
+    @NotBlank(message = "image is required")
+    private String image;
+
     @NotBlank(message = "Phone number is required")
     private String phone;
 
 }
-

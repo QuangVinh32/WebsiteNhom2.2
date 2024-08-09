@@ -1,5 +1,6 @@
 package Website2.service;
 
+import Website2.model.DTO.ProductDTO;
 import Website2.model.DTO.ProductDTOv2;
 import Website2.model.entity.Product;
 import Website2.model.request.CreateProduct;
@@ -13,15 +14,13 @@ import java.util.List;
 import java.util.Optional;
 @Service
 public interface IProductService {
-    List<Product> getAllProducts();
 
     Page<Product> getAllProductsPage(Pageable pageable, FilterProduct filterProduct);
 
     ProductDTOv2 getProductById(int id);
+    ProductDTO getProductByIdOld(int id);
 
     void createProduct(CreateProduct createProduct) throws Exception;
-
-//    Product updateProduct(int productId, UpdateProduct updateProduct) throws Exception;
 
     Product updateProduct(int productId, UpdateProduct updateProduct) throws Exception;
 

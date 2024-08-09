@@ -1,8 +1,6 @@
 package Website2.model.request;
-
 import Website2.model.entity.NsxRole;
 import lombok.Data;
-
 @Data
 public class FilterProduct {
     private String search;
@@ -12,5 +10,4 @@ public class FilterProduct {
     private Boolean  priceDesc;
     private Integer categoryId;
     private NsxRole typeNsx;
-
 }
