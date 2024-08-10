@@ -14,6 +14,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Integer> , JpaSpecificationExecutor<Product> {
     boolean existsByProductName (String productName);
+    List<Product> findAllByProductIdIn(List<Integer> ids);
 
 
 }
