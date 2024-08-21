@@ -1,13 +1,16 @@
 package Website2.repository;
 
 import Website2.model.entity.Cart;
+import Website2.model.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart,Integer> {
-//    List<Cart> fingByUserId(int userId);
+    List<Cart> findAllByUsers(Users users);
+//    Cart findByUsername(String username);
 
 }

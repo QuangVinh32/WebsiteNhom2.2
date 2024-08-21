@@ -1,6 +1,8 @@
 package Website2.model.entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,8 +20,10 @@ public class Cart{
     @JoinColumn(name = "userId")
     private Users users;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private List<CartDetail> cartDetails;
-
-
+    @JsonBackReference
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartDetail> cartDetails = new ArrayList<>(); // Khởi tạo danh sách rỗng
 }
+
+
+

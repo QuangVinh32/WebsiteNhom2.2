@@ -1,6 +1,8 @@
 package Website2.controller;
 import Website2.model.DTO.CartDTO;
 import Website2.model.entity.Cart;
+import Website2.model.entity.CartDetail;
+import Website2.model.entity.Users;
 import Website2.model.request.CreateCart;
 import Website2.model.request.UpdateCart;
 import Website2.service.ICartService;
@@ -52,4 +54,27 @@ public class CartController {
         Optional<Cart> cart = cartService.findByCartId(id);
         return mapper.map(cart,CartDTO.class);
     }
+
+
+    @GetMapping("/details/{username}")
+    public List<Cart> getCartForUser(@PathVariable String username) {
+            List<Cart> cart =  cartService.getCartForUser(username);
+        return cart ;
+    }
+
+    @GetMapping("/infor/{username}")
+    public List<CartDetail> getCartDetailsForUser( @PathVariable String username) {
+        List<CartDetail> cartDetails = cartService.getCartDetailsForUser(username);
+        return cartDetails;
+    }
+    @PostMapping("/{cartId}/add/{productId}")
+    public void addProductToCart(@PathVariable Integer cartId, @PathVariable Integer productId) {
+        cartService.addProductToCart(cartId, productId);
+    }
+
+    @PostMapping("/{cartId}/remove/{productId}")
+    public void removeProductFromCart(@PathVariable Integer cartId, @PathVariable Integer productId) {
+        cartService.removeProductFromCart(cartId, productId);
+    }
+
 }

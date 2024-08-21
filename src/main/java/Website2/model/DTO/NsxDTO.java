@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NsxDTO {
     private Integer nsxId;
-    private String nsxName;
+
 
     // Constructor nhận đối tượng Nsx
     public NsxDTO(Nsx nsx) {

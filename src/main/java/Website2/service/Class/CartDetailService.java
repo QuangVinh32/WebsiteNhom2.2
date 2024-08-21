@@ -46,26 +46,31 @@ public class CartDetailService implements ICartDetailService {
 
     @Override
     public void createCartDetail(CreateCartDetail createCartDetail) {
-        CartDetail cartDetail = new CartDetail();
-        CartDetailPK cartDetailPK = new CartDetailPK();
-        //
-        BeanUtils.copyProperties(createCartDetail,cartDetailPK);
-        cartDetail.setCartDetailPK(cartDetailPK);
-        //
-        Optional<Cart> cart = cartRepository.findById(createCartDetail.getCartId());
-        Optional<Product> product = productRepository.findById(createCartDetail.getCartId());
-        //
-        cartDetailPK.setCartId(cart.get());
-        cartDetailPK.setProductId(product.get());
-        cartDetail.setCartDetailPK(cartDetailPK);
-        //
-        cartDetail.setCart(cart.get());
-        cartDetail.setProduct(product.get());
-        //
-        cartDetail.setCount(createCartDetail.getCount());
-        //
-        cartDetailRepository.save(cartDetail);
+
     }
+
+//    @Override
+//    public void createCartDetail(CreateCartDetail createCartDetail) {
+//        CartDetail cartDetail = new CartDetail();
+//        CartDetailPK cartDetailPK = new CartDetailPK();
+//        //
+//        BeanUtils.copyProperties(createCartDetail,cartDetailPK);
+//        cartDetail.setCartDetailPK(cartDetailPK);
+//        //
+//        Optional<Cart> cart = cartRepository.findById(createCartDetail.getCartId());
+//        Optional<Product> product = productRepository.findById(createCartDetail.getCartId());
+//        //
+//        cartDetailPK.setCartId(cart.get());
+//        cartDetailPK.setProductId(product.get());
+//        cartDetail.setCartDetailPK(cartDetailPK);
+//        //
+//        cartDetail.setCart(cart.get());
+//        cartDetail.setProduct(product.get());
+//        //
+//        cartDetail.setCount(createCartDetail.getCount());
+//        //
+//        cartDetailRepository.save(cartDetail);
+//    }
 
     @Override
     public CartDetail updateCartDetail(UpdateCartDetail updateCartDetail) {

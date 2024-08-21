@@ -37,12 +37,13 @@ public class JwtTokenUtils {
         // Tạo JWT
         String token = Jwts.builder()
                 .setId(String.valueOf(loginDTO.getUserId())) // ID của JWT
-                .setSubject(loginDTO.getUserAgent()) // Chủ đề (Subject) của JWT
+                .setSubject(loginDTO.getUsername()) // Chủ đề (Subject) của JWT
                 .setIssuedAt(new Date())
-                .setIssuer("VTI") // Người tạo ra JWT
+                .setIssuer(String.valueOf(loginDTO.getUserId())) // Người tạo ra JWT
                 .setExpiration(expirationDate) // Thời hạn JWT
                 .signWith(SignatureAlgorithm.HS512, SECRET) // Ký JWT bằng mã bí mật
                 .claim("authorities", loginDTO.getRole().name()) // Thêm thông tin tùy chỉnh vào JWT
+                .claim("loginId", loginDTO.getUserId()) // Thêm thông tin tùy chỉnh vào JWT
                 .claim("user-Agent", loginDTO.getUserAgent()).compact(); // Thêm thông tin tùy chỉnh khác
 
         // Lưu JWT vào cơ sở dữ liệu

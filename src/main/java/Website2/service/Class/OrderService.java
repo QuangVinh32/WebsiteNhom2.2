@@ -70,6 +70,10 @@ public class OrderService implements IOrderService {
             i.setSoLuongTonKho(i.getSoLuongTonKho()-mapAmountByProId.get(i.getProductId()));
         });
         productRepository.saveAll(products);
+
+        // tao orderDetail(idsp , id don hang, so luong)// soluong = soluong o cartdetail bi xoa di
+
+        // xoa di cartDetail (idsp , id gio hang, so luong)
     }
 
     @Override

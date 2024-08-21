@@ -2,6 +2,7 @@ package Website2.service;
 
 
 import Website2.model.entity.Cart;
+import Website2.model.entity.CartDetail;
 import Website2.model.request.CreateCart;
 import Website2.model.request.UpdateCart;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,11 @@ public interface ICartService {
     Cart updateCart(int id, UpdateCart updateCart) throws Exception;
 
     void deleteByCartId(int id);
+
+     List<Cart> getCartForUser(String username);
+    List<CartDetail> getCartDetailsForUser(String username);
+    void addProductToCart(Integer cartId, Integer productId);
+    void removeProductFromCart(Integer cartId, Integer productId);
 
 
 }

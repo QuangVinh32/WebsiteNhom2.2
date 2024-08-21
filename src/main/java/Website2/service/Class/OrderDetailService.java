@@ -38,29 +38,34 @@ public class OrderDetailService implements IOrderDetailService {
                 .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy id mong muốn"));
         return orderDetail;
     }
+
     @Override
     public void createOrderDetail(CreateOrderDetail createOrderDetail) {
-        OrderDetail orderDetail = new OrderDetail();
-        OrderDetailPK orderDetailPK = new OrderDetailPK();
-        //
-        BeanUtils.copyProperties(createOrderDetail,orderDetailPK);
-        orderDetail.setOrderDetailPK(orderDetailPK);
-        //
-        Optional<Order> order = orderRepository.findById(createOrderDetail.getOrderId());
-        Optional<Product> product = productRepository.findById(createOrderDetail.getProductId());
-        //
-        orderDetailPK.setOrderId(order.get());
-        orderDetailPK.setProductId(product.get());
-        orderDetail.setOrderDetailPK(orderDetailPK);
-        //
-        orderDetail.setOrder(order.get());
-        orderDetail.setProduct(product.get());
-        //
-        orderDetail.setCount(createOrderDetail.getCount());
-        //
-        orderDetailRepository.save(orderDetail);
 
     }
+//    @Override
+//    public void createOrderDetail(CreateOrderDetail createOrderDetail) {
+//        OrderDetail orderDetail = new OrderDetail();
+//        OrderDetailPK orderDetailPK = new OrderDetailPK();
+//        //
+//        BeanUtils.copyProperties(createOrderDetail,orderDetailPK);
+//        orderDetail.setOrderDetailPK(orderDetailPK);
+//        //
+//        Optional<Order> order = orderRepository.findById(createOrderDetail.getOrderId());
+//        Optional<Product> product = productRepository.findById(createOrderDetail.getProductId());
+//        //
+//        orderDetailPK.setOrderId(order.get());
+//        orderDetailPK.setProductId(product.get());
+//        orderDetail.setOrderDetailPK(orderDetailPK);
+//        //
+//        orderDetail.setOrder(order.get());
+//        orderDetail.setProduct(product.get());
+//        //
+//        orderDetail.setCount(createOrderDetail.getCount());
+//        //
+//        orderDetailRepository.save(orderDetail);
+//
+//    }
 
     @Override
     public OrderDetail updateOrderDetail(UpdateOrderDetail updateOrderDetail) {

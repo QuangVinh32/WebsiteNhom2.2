@@ -1,6 +1,7 @@
 package Website2.controller;
 
 import Website2.model.DTO.CategoryDTO;
+import Website2.model.DTO.CategoryForAdmin;
 import Website2.model.entity.Category;
 import Website2.model.request.CreateCategory;
 import Website2.model.request.FilterCategory;
@@ -30,20 +31,20 @@ public class    CategoryController {
     private ModelMapper mapper;
 
     @GetMapping("/find-all-category")
-    public ResponseEntity<Page<CategoryDTO>> findAllCategoryPage(Pageable pageable, FilterCategory filterCategory) {
+    public ResponseEntity<Page<CategoryForAdmin>> findAllCategoryPage(Pageable pageable, FilterCategory filterCategory) {
         Page<Category> categoryPage = categoryService.getAllCategoryPage(pageable, filterCategory);
-        Page<CategoryDTO> categoryDTOPage = categoryPage.map(category -> mapper.map(category, CategoryDTO.class));
-        return ResponseEntity.ok(categoryDTOPage);
+        Page<CategoryForAdmin> categoryForAdmins = categoryPage.map(category -> mapper.map(category, CategoryForAdmin.class));
+        return ResponseEntity.ok(categoryForAdmins);
     }
 
     @GetMapping("/find-by-id/{id}")
-    public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Integer id) {
+    public ResponseEntity<CategoryForAdmin> getCategoryById(@PathVariable Integer id) {
         Optional<Category> categoryOptional = categoryService.findByCategoryId(id);
 
         if (categoryOptional.isPresent()) {
             Category category = categoryOptional.get();
-            CategoryDTO categoryDTO = mapper.map(category, CategoryDTO.class);
-            return ResponseEntity.ok(categoryDTO);
+            CategoryForAdmin categoryForAdmin = mapper.map(category, CategoryForAdmin.class);
+            return ResponseEntity.ok(categoryForAdmin);
         } else {
             return ResponseEntity.notFound().build();
         }

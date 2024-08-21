@@ -8,9 +8,6 @@ public class CategoryDTO {
 
     private Integer categoryId;
 
-    private String categoryName;
-
-    private String Description;
     public CategoryDTO(Category category) {
         this.categoryId = category.getCategoryId();
     }

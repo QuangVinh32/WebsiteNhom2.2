@@ -59,9 +59,13 @@ public class Product {
     @Column(name = "categoryId")
     private Integer categoryId;
 
+    @JsonBackReference
+
     @ManyToOne()
     @JoinColumn(name = "nsxId", referencedColumnName = "nsxId", insertable = false, updatable = false)
     private Nsx nsx;
+
+    @JsonBackReference
 
     @ManyToOne
     @JoinColumn(name = "categoryId", referencedColumnName = "categoryId", insertable = false, updatable = false)
@@ -73,6 +77,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetail;
+    @JsonBackReference
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<CartDetail> cartDetails;
