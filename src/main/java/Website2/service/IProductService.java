@@ -1,7 +1,7 @@
 package Website2.service;
 
-import Website2.model.DTO.ProductDTO;
-import Website2.model.DTO.ProductDTOv2;
+import Website2.model.DTO.ProductForAdmin;
+import Website2.model.DTO.ProductForUser;
 import Website2.model.entity.Product;
 import Website2.model.request.CreateProduct;
 import Website2.model.request.FilterProduct;
@@ -11,14 +11,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 @Service
 public interface IProductService {
 
     Page<Product> getAllProductsPage(Pageable pageable, FilterProduct filterProduct);
 
-    ProductDTOv2 getProductById(int id);
-    ProductDTO getProductByIdOld(int id);
+    ProductForUser getProductById(int id);
+    ProductForAdmin getProductByIdOld(int id);
 
     void createProduct(CreateProduct createProduct) throws Exception;
 

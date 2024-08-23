@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 @Data
-public class ProductDTOv3 {
+public class ProductFindAll {
     private int productId;
     private String productCode;
     private String productName;

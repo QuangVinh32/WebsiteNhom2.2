@@ -1,5 +1,7 @@
 package Website2.controller;
 import Website2.model.DTO.CartDTO;
+
+import Website2.model.DTO.CartSummaryDTO;
 import Website2.model.entity.Cart;
 import Website2.model.entity.CartDetail;
 import Website2.model.entity.Users;
@@ -37,17 +39,17 @@ public class CartController {
     @PostMapping("/create-cart")
     public ResponseEntity<?> createCart(@RequestBody CreateCart createCart) throws Exception {
         cartService.createCart(createCart);
-        return ResponseEntity.ok("Thêm Hóa Đơn thành công");
+        return ResponseEntity.ok("Thêm giỏ hàng thành công");
     }
     @PutMapping("/update-cart/{id}")
     public ResponseEntity<?> updateCart(@PathVariable int id,@RequestBody UpdateCart updateCart) throws Exception {
         cartService.updateCart(id,updateCart);
-        return ResponseEntity.ok("Sửa Hóa Đơn thành công");
+        return ResponseEntity.ok("Sửa giỏ hàng thành công");
     }
     @DeleteMapping("/delete-cart/{id}")
     public ResponseEntity<?> deleteCart(@PathVariable("id") int id){
         cartService.deleteByCartId(id);
-        return ResponseEntity.ok("Xóa Hóa Đơn thàng công");
+        return ResponseEntity.ok("Xóa giỏ hàng thàng công");
     }
     @GetMapping("/find-by-id/{id}")
     public CartDTO findCartById(@PathVariable("id") int id ){
@@ -56,25 +58,38 @@ public class CartController {
     }
 
 
-    @GetMapping("/details/{username}")
-    public List<Cart> getCartForUser(@PathVariable String username) {
-            List<Cart> cart =  cartService.getCartForUser(username);
-        return cart ;
+//    @GetMapping("/details/{username}")
+//    public List<Cart> getCartForUser(@PathVariable String username) {
+//            List<Cart> cart =  cartService.getCartForUser(username);
+//        return cart ;
+//    }
+//
+//    @GetMapping("/infor/{username}")
+//    public List<CartDetail> getCartDetailsForUser( @PathVariable String username) {
+//        List<CartDetail> cartDetails = cartService.getCartDetailsForUser(username);
+//        return cartDetails;
+//    }
+
+    @PostMapping("/add/{productId}")
+    public ResponseEntity<?> addProductToCart(@PathVariable Integer productId) {
+        cartService.addProductToCart(productId);
+        return ResponseEntity.ok("Product added to cart");
     }
 
-    @GetMapping("/infor/{username}")
-    public List<CartDetail> getCartDetailsForUser( @PathVariable String username) {
-        List<CartDetail> cartDetails = cartService.getCartDetailsForUser(username);
-        return cartDetails;
-    }
-    @PostMapping("/{cartId}/add/{productId}")
-    public void addProductToCart(@PathVariable Integer cartId, @PathVariable Integer productId) {
-        cartService.addProductToCart(cartId, productId);
-    }
 
-    @PostMapping("/{cartId}/remove/{productId}")
-    public void removeProductFromCart(@PathVariable Integer cartId, @PathVariable Integer productId) {
-        cartService.removeProductFromCart(cartId, productId);
+
+    @DeleteMapping("/remove/{productId}")
+    public ResponseEntity<String> removeProductFromCart(@PathVariable Integer productId) {
+        try {
+            cartService.removeProductFromCart(productId);
+            return ResponseEntity.ok("Xóa sản phẩm khỏi giỏ hàng thành công.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("/summary")
+    public CartSummaryDTO getCartSummary() {
+        return cartService.getCartSummary();
     }
 
 }

@@ -12,19 +12,16 @@ import Website2.repository.ReviewRepository;
 import Website2.service.IProductService;
 import Website2.speacification.ProductSpecification;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductService implements IProductService {
@@ -119,7 +116,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductDTOv2 getProductById(int id) {
+    public ProductForUser getProductById(int id) {
         // Lấy Product theo ID
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
@@ -128,11 +125,11 @@ public class ProductService implements IProductService {
         List<Reviews> reviews = reviewRepository.findByProductId(id);
 
         // Tạo và trả về ProductDTOv2
-        return new ProductDTOv2(product, reviews);
+        return new ProductForUser(product, reviews);
     }
 
     @Override
-    public ProductDTO getProductByIdOld(int id) {
+    public ProductForAdmin getProductByIdOld(int id) {
         // Tìm sản phẩm theo ID trong cơ sở dữ liệu
         Optional<Product> optionalProduct = productRepository.findById(id);
 
@@ -141,7 +138,7 @@ public class ProductService implements IProductService {
             Product product = optionalProduct.get();
 
             // Chuyển đổi từ entity Product sang DTO ProductDTO
-            ProductDTO productDTO = new ProductDTO(product);
+            ProductForAdmin productDTO = new ProductForAdmin(product);
             productDTO.setProductId(product.getProductId());
             productDTO.setProductCode(Integer.parseInt(product.getProductCode())); // Assuming productCode is String
             productDTO.setProductName(product.getProductName());

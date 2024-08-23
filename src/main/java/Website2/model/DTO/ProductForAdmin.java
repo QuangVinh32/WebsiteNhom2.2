@@ -1,20 +1,15 @@
 package Website2.model.DTO;
+
 import Website2.model.entity.Product;
 import Website2.model.entity.ProductStatus;
-import Website2.model.entity.Reviews;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
-@NoArgsConstructor
-public class ProductDTOv2 extends RepresentationModel<ProductDTOv2> {
+public class ProductForAdmin {
     private int productId;
-    private String productCode;
+    private int productCode;
     private String productName;
     private String descriptionProduct;
     private int price;
@@ -23,11 +18,13 @@ public class ProductDTOv2 extends RepresentationModel<ProductDTOv2> {
     private ProductStatus status;
     private LocalDateTime createdTime;
     private int soLuongTonKho;
-    private List<ReviewsDTO> reviews = new ArrayList<>(); // Khởi tạo danh sách ở đây
+    private NsxDTO nsxDTO;
+    private CategoryDTO categoryDTO;
 
-    public ProductDTOv2(Product product, List<Reviews> reviews) {
+    // Constructor từ Product entity
+    public ProductForAdmin(Product product) {
         this.productId = product.getProductId();
-        this.productCode = product.getProductCode();
+        this.productCode = Integer.parseInt(product.getProductCode());
         this.productName = product.getProductName();
         this.descriptionProduct = product.getProductDescription();
         this.price = product.getPrice();
@@ -37,12 +34,12 @@ public class ProductDTOv2 extends RepresentationModel<ProductDTOv2> {
         this.createdTime = product.getCreateTime();
         this.soLuongTonKho = product.getSoLuongTonKho();
 
-        // Thay vì khởi tạo danh sách ở đây, đã khởi tạo trước trong khai báo
-        // Bạn có thể tùy chọn khởi tạo danh sách rỗng nếu không có reviews
-        if (reviews != null) {
-            for (Reviews review : reviews) {
-                this.reviews.add(new ReviewsDTO(review));
-            }
+        // Nếu Nsx và Category không null, ánh xạ chúng sang DTO tương ứng
+        if (product.getNsx() != null) {
+            this.nsxDTO = new NsxDTO(product.getNsx());
+        }
+        if (product.getCategory() != null) {
+            this.categoryDTO = new CategoryDTO(product.getCategory());
         }
     }
 }

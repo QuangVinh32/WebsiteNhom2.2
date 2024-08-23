@@ -1,5 +1,8 @@
 package Website2.service.Class;
 
+import Website2.model.DTO.CartDetailDTO;
+import Website2.model.DTO.CartSummaryDTO;
+import Website2.model.DTO.ProductDTO;
 import Website2.model.entity.*;
 import Website2.model.request.CreateCart;
 import Website2.model.request.UpdateCart;
@@ -17,6 +20,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -67,37 +71,37 @@ public class CartService implements ICartService {
 
     }
 
-    @Override
-    public List<Cart> getCartForUser(String username) {
-        Optional<Users> users = userRepository.findByUsername(username);
-        return cartRepository.findAllByUsers(users.get());
-    }
+//    @Override
+//    public List<Cart> getCartForUser(String username) {
+//        Optional<Users> users = userRepository.findByUsername(username);
+//        return cartRepository.findAllByUsers(users.get());
+//    }
+//
+//    @Override
+//    public List<CartDetail> getCartDetailsForUser(String username) {
+//        List<Cart> carts = getCartForUser(username);
+//        List<CartDetail> cartDetails = new ArrayList<>();
+//        for (Cart cart1: carts){
+//            List<CartDetail> details = cartDetailRepository.findAllByCart(cart1);
+//            cartDetails.addAll(details);
+//        }
+//        return cartDetails;
+//    }
 
-    @Override
-    public List<CartDetail> getCartDetailsForUser(String username) {
-        List<Cart> carts = getCartForUser(username);
-        List<CartDetail> cartDetails = new ArrayList<>();
-        for (Cart cart1: carts){
-            List<CartDetail> details = cartDetailRepository.findAllByCart(cart1);
-            cartDetails.addAll(details);
-        }
-        return cartDetails;
-    }
 
+    public void addProductToCart(Integer productId) {
+        // Lấy thông tin người dùng hiện tại từ SecurityContext
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Users user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-    // Phương thức thêm sản phẩm vào giỏ hàng
-    public void addProductToCart(Integer cartId, Integer productId) {
-        // Tìm Cart theo cartId
-        Cart cart = cartRepository.findById(cartId).orElse(null);
+        // Kiểm tra xem người dùng đã có Cart hay chưa
+        Cart cart = cartRepository.findByUsers(user).orElse(null);
 
         if (cart == null) {
-            // Nếu không tìm thấy Cart, tạo mới
+            // Nếu chưa có, tạo mới Cart
             cart = new Cart();
             cart.setTotal(0); // Khởi tạo tổng tiền là 0
-            // Lấy thông tin người dùng hiện tại từ SecurityContext
-            String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            Users user = userRepository.findByUsername(username)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
             cart.setUsers(user);
             cart = cartRepository.save(cart); // Lưu Cart mới
         }
@@ -111,10 +115,12 @@ public class CartService implements ICartService {
         Optional<CartDetail> existingCartDetail = cartDetailRepository.findById(cartDetailPK);
 
         if (existingCartDetail.isPresent()) {
+            // Tăng số lượng sản phẩm nếu đã có trong CartDetail
             CartDetail cartDetail = existingCartDetail.get();
             cartDetail.setCount(cartDetail.getCount() + 1);
             cartDetailRepository.save(cartDetail);
         } else {
+            // Thêm mới sản phẩm vào CartDetail nếu chưa có
             CartDetail newCartDetail = new CartDetail();
             newCartDetail.setCartDetailPK(cartDetailPK);
             newCartDetail.setCount(1);
@@ -127,14 +133,23 @@ public class CartService implements ICartService {
         updateCartTotal(cart);
     }
 
-    // Phương thức xoá sản phẩm khỏi giỏ hàng
-    public void removeProductFromCart(Integer cartId, Integer productId) {
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
+    public void removeProductFromCart(Integer productId) {
+        // Get the current username from SecurityContext
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        // Fetch the user by username
+        Users user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Fetch the cart for the user
+        Cart cart = cartRepository.findByUsers(user)
+                .orElseThrow(() -> new RuntimeException("Cart not found for user"));
+
+        // Find the product by productId
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
+        // Create CartDetailPK and find the current CartDetail
         CartDetailPK cartDetailPK = new CartDetailPK(cart, product);
         Optional<CartDetail> existingCartDetail = cartDetailRepository.findById(cartDetailPK);
 
@@ -143,20 +158,35 @@ public class CartService implements ICartService {
             int newCount = cartDetail.getCount() - 1;
 
             if (newCount > 0) {
-                // Cập nhật số lượng và lưu lại
+                // Update quantity and save
                 cartDetail.setCount(newCount);
                 cartDetailRepository.save(cartDetail);
             } else {
-                // Xóa CartDetail nếu số lượng bằng 0
+                // Delete CartDetail if quantity is 0
                 cartDetailRepository.delete(cartDetail);
             }
 
-            // Cập nhật tổng tiền của giỏ hàng
-            updateCartTotal(cart);
+            // Check if the cart is empty
+            List<CartDetail> remainingCartDetails = cartDetailRepository.findByCart(cart);
+            if (remainingCartDetails.isEmpty()) {
+                // If the cart has no remaining products, delete the cart
+                cartRepository.delete(cart);
+            } else {
+                // Update the total of the cart
+                updateCartTotal(cart);
+            }
         } else {
             throw new RuntimeException("CartDetail not found");
         }
     }
+
+//    public Cart findCartByUser(Users user) {
+//        return cartRepository.findByUsers(user)
+//                .orElseThrow(() -> new RuntimeException("Cart not found for user: " + user.getUsername()));
+//    }
+
+
+
 
     // Phương thức cập nhật tổng tiền của giỏ hàng
     private void updateCartTotal(Cart cart) {
@@ -172,6 +202,54 @@ public class CartService implements ICartService {
         cart.setTotal((int) cartTotal);
         cartRepository.save(cart);
     }
+    @Override
+    public CartSummaryDTO getCartSummary() {
+        // Get the current username from the SecurityContext
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // Fetch the user by username
+        Users user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Fetch the cart for the user
+        List<Cart> carts = cartRepository.findAllByUsers(user);
+
+        if (carts.isEmpty()) {
+            throw new RuntimeException("Cart not found for user");
+        }
+
+        Cart cart = carts.get(0);  // Assuming a single cart per user
+
+        // Fetch cart details
+        List<CartDetailDTO> cartDetails = cart.getCartDetails().stream()
+                .map(cartDetail -> {
+                    CartDetailDTO dto = new CartDetailDTO();
+                    dto.setProductName(cartDetail.getProduct().getProductName());
+                    dto.setProductImage(cartDetail.getProduct().getImage());
+                    dto.setPrice(cartDetail.getProduct().getPrice());
+                    dto.setDiscount(cartDetail.getProduct().getDiscount());
+                    dto.setCount(cartDetail.getCount());
+                    int totalPrice = (int) (cartDetail.getProduct().getPrice() * ((100 - cartDetail.getProduct().getDiscount()) / 100.0) * cartDetail.getCount());
+                    dto.setTotalPrice(totalPrice);
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        // Calculate the total price for the cart
+        int total = cartDetails.stream()
+                .mapToInt(CartDetailDTO::getTotalPrice)
+                .sum();
+
+        // Create CartSummaryDTO and set values
+        CartSummaryDTO cartSummaryDTO = new CartSummaryDTO();
+        cartSummaryDTO.setCartDetails(cartDetails);
+        cartSummaryDTO.setTotal(total);
+
+        return cartSummaryDTO;
+    }
+
+
+
 
 
 

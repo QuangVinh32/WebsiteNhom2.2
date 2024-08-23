@@ -1,7 +1,7 @@
 package Website2.controller;
-import Website2.model.DTO.ProductDTO;
-import Website2.model.DTO.ProductDTOv2;
-import Website2.model.DTO.ProductDTOv3;
+import Website2.model.DTO.ProductForAdmin;
+import Website2.model.DTO.ProductForUser;
+import Website2.model.DTO.ProductFindAll;
 import Website2.model.entity.Product;
 import Website2.model.request.CreateProduct;
 import Website2.model.request.FilterProduct;
@@ -29,9 +29,9 @@ public class ProductController {
     private ModelMapper mapper;
 
      @GetMapping("/find-all-product")
-     public Page<ProductDTOv3> findAllProductPage(Pageable pageable, FilterProduct filterProduct) {
+     public Page<ProductFindAll> findAllProductPage(Pageable pageable, FilterProduct filterProduct) {
             Page<Product> productsPage = productService.getAllProductsPage(pageable,filterProduct);
-            return productsPage.map(product -> mapper.map(product, ProductDTOv3.class));
+            return productsPage.map(product -> mapper.map(product, ProductFindAll.class));
 }
 
     @PostMapping("/create-product")
@@ -51,9 +51,9 @@ public class ProductController {
     }
 
     @GetMapping("/find-by-id/{id}")
-    public ResponseEntity<ProductDTOv2> findProductById(@PathVariable("id") int id) {
+    public ResponseEntity<ProductForUser> findProductById(@PathVariable("id") int id) {
         System.out.println("Fetching product with ID: " + id);
-        ProductDTOv2 productDTOv2 = productService.getProductById(id);
+        ProductForUser productDTOv2 = productService.getProductById(id);
         if (productDTOv2 != null) {
             return ResponseEntity.ok(productDTOv2);
         } else {
@@ -62,10 +62,10 @@ public class ProductController {
         }
     }
     @GetMapping("/find-by-id/v1/{id}")
-    public ResponseEntity<ProductDTO> findProductByIdOld(@PathVariable("id") int id) {
+    public ResponseEntity<ProductForAdmin> findProductByIdOld(@PathVariable("id") int id) {
         System.out.println("Fetching product with ID: " + id);
 
-        ProductDTO productDTO = productService.getProductByIdOld(id);
+        ProductForAdmin productDTO = productService.getProductByIdOld(id);
 
         if (productDTO != null) {
             return ResponseEntity.ok(productDTO);
@@ -76,9 +76,9 @@ public class ProductController {
     }
 
     @GetMapping("/find-by-typeid/{id}")
-    public ProductDTO getAllProductByTypeId(@PathVariable("id") int id ){
+    public ProductForAdmin getAllProductByTypeId(@PathVariable("id") int id ){
         List<Product> product = productService.getAllProductByTypeId(id);
-        return mapper.map(product,ProductDTO.class);
+        return mapper.map(product, ProductForAdmin.class);
     }
 
 }
