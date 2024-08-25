@@ -25,11 +25,6 @@ public class CategoryService implements ICategoryService {
     @Autowired
     private ModelMapper mapper;
 
-//    @Override
-//    public List<Category> findAll() {
-//        return categoryRepository.findAll();
-//    }
-
     @Override
     public Page<Category> getAllCategoryPage(Pageable pageable, FilterCategory filterCategory) {
         Specification<Category> spec = CategorySpecification.buildSpec(filterCategory);

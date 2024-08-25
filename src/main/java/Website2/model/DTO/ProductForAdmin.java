@@ -1,9 +1,7 @@
 package Website2.model.DTO;
-
 import Website2.model.entity.Product;
 import Website2.model.entity.ProductStatus;
 import lombok.Data;
-
 import java.time.LocalDateTime;
 
 @Data

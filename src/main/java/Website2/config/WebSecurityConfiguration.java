@@ -92,7 +92,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         // Tạo đối tượng CorsConfiguration mới, chứa thông tin cấu hình CORS
         CorsConfiguration configuration = new CorsConfiguration();
         // Thiết lập danh sách các nguồn (origins) được phép truy cập vào tài nguyên trên server
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3001","http://localhost:3000")); // Chỉ cho phép nguồn từ localhost:3001
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3002","http://localhost:3001","http://localhost:3000")); // Chỉ cho phép nguồn từ localhost:3001
         // Thiết lập các phương thức HTTP (HTTP methods) được phép sử dụng
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH")); // Cho phép các phương thức HTTP này
         // Cho phép gửi thông tin xác thực (credentials) như cookie, headers authentication

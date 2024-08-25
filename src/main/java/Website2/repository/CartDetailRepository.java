@@ -8,8 +8,8 @@ import java.util.List;
 
 @Repository
 public interface CartDetailRepository extends JpaRepository<CartDetail, CartDetailPK> {
-
         List<CartDetail> findAllByCart(Cart cart);
-
         List<CartDetail> findByCart(Cart cart);
+
+
 }

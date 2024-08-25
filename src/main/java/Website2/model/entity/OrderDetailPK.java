@@ -14,4 +14,14 @@ public class OrderDetailPK implements Serializable {
     @JoinColumn(name = "orderId")
     private Order orderId;
 
+
+    // Constructor với tham số
+    public OrderDetailPK(Order orderId, Product productId) {
+        this.orderId = orderId;
+        this.productId = productId;
+    }
+
+    // Constructor mặc định (không tham số)
+    public OrderDetailPK() {
+    }
 }

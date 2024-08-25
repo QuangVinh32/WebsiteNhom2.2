@@ -36,4 +36,8 @@ public class Order {
 
     @Column(name = "note")
     private String note;
+    // Thêm mối quan hệ với Users
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private Users user;
 }

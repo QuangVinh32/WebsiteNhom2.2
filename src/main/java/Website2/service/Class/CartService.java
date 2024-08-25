@@ -92,6 +92,7 @@ public class CartService implements ICartService {
     public void addProductToCart(Integer productId) {
         // Lấy thông tin người dùng hiện tại từ SecurityContext
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
         Users user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -134,7 +135,7 @@ public class CartService implements ICartService {
     }
 
     public void removeProductFromCart(Integer productId) {
-        // Get the current username from SecurityContext
+        // Lấy thông tin người dùng hiện tại từ SecurityContext
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         // Fetch the user by username
@@ -219,7 +220,6 @@ public class CartService implements ICartService {
         }
 
         Cart cart = carts.get(0);  // Assuming a single cart per user
-
         // Fetch cart details
         List<CartDetailDTO> cartDetails = cart.getCartDetails().stream()
                 .map(cartDetail -> {
@@ -258,55 +258,8 @@ public class CartService implements ICartService {
 
 
 
-//                                      ADD
-    // Method to add or increase the quantity of a product in the cart
-//    public void addProductToCart(Integer cartId, Integer productId) {
-//        Cart cart = cartRepository.findById(cartId)
-//                .orElseThrow(() -> new RuntimeException("Cart not found"));
-//
-//        Product product = productRepository.findById(productId)
-//                .orElseThrow(() -> new RuntimeException("Product not found"));
-//
-//        CartDetailPK cartDetailPK = new CartDetailPK(cart, product);
-//        Optional<CartDetail> existingCartDetail = cartDetailRepository.findById(cartDetailPK);
-//
-//        if (existingCartDetail.isPresent()) {
-//            CartDetail cartDetail = existingCartDetail.get();
-//            cartDetail.setCount(cartDetail.getCount() + 1);
-//            cartDetailRepository.save(cartDetail);
-//        } else {
-//            CartDetail newCartDetail = new CartDetail();
-//            newCartDetail.setCartDetailPK(cartDetailPK);
-//            newCartDetail.setCount(1);
-//            newCartDetail.setCart(cart);
-//            newCartDetail.setProduct(product);
-//            cartDetailRepository.save(newCartDetail);
-//        }
-//    }
 
 
-
-
-//                                             REMOVE
-//    // Method to decrease the quantity of a product in the cart or remove it if quantity reaches 0
-//    public void removeProductFromCart(Integer cartId, Integer productId) {
-//        Cart cart = cartRepository.findById(cartId)
-//                .orElseThrow(() -> new RuntimeException("Cart not found"));
-//
-//        Product product = productRepository.findById(productId)
-//                .orElseThrow(() -> new RuntimeException("Product not found"));
-//
-//        CartDetailPK cartDetailPK = new CartDetailPK(cart, product);
-//        CartDetail cartDetail = cartDetailRepository.findById(cartDetailPK)
-//                .orElseThrow(() -> new RuntimeException("CartDetail not found"));
-//
-//        if (cartDetail.getCount() > 1) {
-//            cartDetail.setCount(cartDetail.getCount() - 1);
-//            cartDetailRepository.save(cartDetail);
-//        } else {
-//            cartDetailRepository.delete(cartDetail);
-//        }
-//    }
 
     //                        CREATE CART
 

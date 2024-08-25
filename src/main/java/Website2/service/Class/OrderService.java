@@ -1,15 +1,10 @@
 package Website2.service.Class;
 import Website2.model.DTO.OrderDTO;
-import Website2.model.entity.Nsx;
-import Website2.model.entity.Order;
-import Website2.model.entity.OrderDetail;
-import Website2.model.entity.Product;
+import Website2.model.entity.*;
 import Website2.model.request.CreateOrder;
 import Website2.model.request.FilterOrder;
 import Website2.model.request.UpdateOrder;
-import Website2.repository.OrderDetailRepository;
-import Website2.repository.OrderRepository;
-import Website2.repository.ProductRepository;
+import Website2.repository.*;
 import Website2.service.IOrderService;
 import Website2.speacification.OrderSpecification;
 import org.modelmapper.ModelMapper;
@@ -17,11 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,7 +32,13 @@ public class OrderService implements IOrderService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
+    private CartRepository cartRepository;
+    @Autowired
+    private CartDetailRepository cartDetailRepository;
+    @Autowired
     private OrderDetailRepository orderDetailRepository;
+    @Autowired
+    private UserRepository userRepository;
     @Override
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
@@ -55,26 +60,84 @@ public class OrderService implements IOrderService {
         return new OrderDTO(order, orderDetails);
     }
 
-    @Override
-    public void createOrder(CreateOrder createOrder) throws Exception {
-       Order orderDb = mapper.map(createOrder, Order.class);
-        orderRepository.save(orderDb);// luu order
-        // xoa di so san da dc mua
-        Map<Integer, Integer> mapAmountByProId = createOrder.getProductRequests()
-                .stream().collect(Collectors.toMap(i->i.getIdPro(), i-> i.getAmount()));
 
-        List<Integer> ids = createOrder.getProductRequests().stream().map(i->i.getIdPro()).collect(Collectors.toList());
-        List<Product> products = productRepository.findAllByProductIdIn(ids);
-        products.forEach(i-> {
-            // tru so luong da mua
-            i.setSoLuongTonKho(i.getSoLuongTonKho()-mapAmountByProId.get(i.getProductId()));
-        });
-        productRepository.saveAll(products);
+//    @Override
+//    public void createOrder(CreateOrder createOrder) throws Exception {
+//       Order orderDb = mapper.map(createOrder, Order.class);
+//        orderRepository.save(orderDb);// luu order
+//        // xoa di so san da dc mua
+//        Map<Integer, Integer> mapAmountByProId = createOrder.getProductRequests()
+//                .stream().collect(Collectors.toMap(i->i.getIdPro(), i-> i.getAmount()));
+//
+//        List<Integer> ids = createOrder.getProductRequests().stream().map(i->i.getIdPro()).collect(Collectors.toList());
+//        List<Product> products = productRepository.findAllByProductIdIn(ids);
+//        products.forEach(i-> {
+//            // tru so luong da mua
+//            i.setSoLuongTonKho(i.getSoLuongTonKho()-mapAmountByProId.get(i.getProductId()));
+//        });
+//        productRepository.saveAll(products);
+//
+//        // tao orderDetail(idsp , id don hang, so luong)// soluong = soluong o cartdetail bi xoa di
+//        //+++ xoa di cartDetail (idsp , id gio hang, so luong)
+//        // lay username nguoi dang nhap
+//        // => lay gio hang theo username nguoi dang nhap
+//        //createOrder.getProductRequests() -> ds cac sp can xoa ở cart detail
+//        // ds sp can xoa va id gio hang => tim ra ds cart detail muon xoa
+//        // List<CartDetail>  ls findByCartIdAndProductIdIn(id gio hang, list id sp)
+//        //  select * from cartDetail where cart_id = ? and product_id in (1,2)
+//        // delete ls
+//    }
 
-        // tao orderDetail(idsp , id don hang, so luong)// soluong = soluong o cartdetail bi xoa di
 
-        // xoa di cartDetail (idsp , id gio hang, so luong)
+    @Transactional
+    public void createOrder(CreateOrder createOrderDTO) {
+        // Lấy thông tin người dùng hiện tại từ SecurityContext
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Users user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Kiểm tra xem người dùng đã có Cart hay chưa
+        Cart cart = cartRepository.findByUsers(user).orElse(null);
+
+        if (cart == null || cart.getCartDetails().isEmpty()) {
+            throw new IllegalArgumentException("Giỏ hàng trống");
+        }
+
+        // Tạo đối tượng Order
+        Order order = new Order();
+        order.setFullName(createOrderDTO.getFullName());
+        order.setAddress(createOrderDTO.getAddress());
+        order.setPhone(createOrderDTO.getPhone());
+        order.setTotal(cart.getTotal());
+        order.setOrderDate(new Date());
+        order.setStatus(OrderStatus.Ordered);  // Đặt trạng thái mặc định cho đơn hàng
+
+        orderRepository.save(order);
+
+        // Tạo chi tiết đơn hàng từ chi tiết giỏ hàng
+        for (CartDetail cartDetail : cart.getCartDetails()) {
+            OrderDetailPK orderDetailPK = new OrderDetailPK(order, cartDetail.getProduct());
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setOrderDetailPK(orderDetailPK);
+            orderDetail.setCount(cartDetail.getCount());
+
+            orderDetailRepository.save(orderDetail);
+        }
+
+        // Xóa giỏ hàng sau khi tạo đơn hàng
+        cartDetailRepository.deleteAll(cart.getCartDetails());
+        cartRepository.delete(cart);
     }
+
+
+
+
+
+
+
+
+
 
     @Override
     public Order updateOrder(int orderID, UpdateOrder updateOrder) throws Exception {

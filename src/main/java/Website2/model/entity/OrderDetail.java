@@ -14,10 +14,12 @@ public class OrderDetail {
     private int count;
 
     @ManyToOne
+    @MapsId("productId")
     @JoinColumn(name = "productId", referencedColumnName = "productId", insertable = false, updatable = false)
     private Product product;
 
     @ManyToOne
+    @MapsId("orderId")
     @JoinColumn(name = "orderId", referencedColumnName = "orderId", insertable = false, updatable = false)
     private Order order;
 }
