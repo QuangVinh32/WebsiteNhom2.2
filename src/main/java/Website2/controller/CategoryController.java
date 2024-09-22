@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequestMapping("api/v1/categories")
 @CrossOrigin("*")
 @Validated
-public class    CategoryController {
+public class CategoryController {
 
     @Autowired
     private ICategoryService categoryService;

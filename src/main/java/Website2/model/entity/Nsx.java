@@ -12,7 +12,7 @@ public class Nsx {
     private Integer nsxId;
 
     @Column(name = "role")
-    @Enumerated(EnumType.STRING) // Sử dụng EnumType.STRING để lưu trữ giá trị của Enum dưới dạng chuỗi
+    @Enumerated(EnumType.STRING)
     private NsxRole nsxRole;
 
     @OneToMany(mappedBy = "nsx", cascade = CascadeType.ALL)

@@ -10,9 +10,13 @@ import Website2.repository.UserRepository;
 import Website2.service.IReviewService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -42,23 +46,31 @@ public class ReviewsService implements IReviewService {
         return reviewRepository.findById(id);
 
     }
-
+    @Transactional
     @Override
     public void createReviews(CreateReviews createReviews) {
+        // Lấy tên người dùng từ SecurityContext
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // Tìm người dùng dựa trên tên người dùng
+        Users user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Lấy thông tin sản phẩm từ productId
         Product product = productRepository.findById(createReviews.getProductId())
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + createReviews.getProductId()));
-        Users user = userRepository.findById(createReviews.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + createReviews.getUserId()));
 
+        // Tạo và lưu đối tượng Reviews
         Reviews review = new Reviews();
-        review.setUserId(user.getUserId());
-        review.setProductId(product.getProductId());
+        review.setUser(user);  // Gán đối tượng Users vào Reviews
+        review.setProduct(product);  // Gán đối tượng Product vào Reviews
         review.setContent(createReviews.getContent());
         review.setRate(createReviews.getRate());
-        review.setCreateTimeReview(LocalDateTime.now());
-        reviewRepository.save(review);
-    }
+            review.setCreateTimeReview(LocalDateTime.now()); // Sử dụng thời gian hiện tại
 
+        reviewRepository.save(review);
+
+    }
 
 
 

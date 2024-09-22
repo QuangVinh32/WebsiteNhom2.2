@@ -10,12 +10,9 @@ public class CartDetailPK implements Serializable {
     @ManyToOne
     @JoinColumn(name = "cartId")
     private Cart cartId;
-
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product productId;
-
-
     public CartDetailPK(Cart cart, Product product) {
         this.cartId = cart;
         this.productId = product;

@@ -41,7 +41,7 @@ public class ControllerExceptionHandler {
         AppException appException = new AppException(errorMessage, 400, request.getRequestURI());
         return new ResponseEntity<>(appException, HttpStatus.valueOf(appException.getCode()));
     }
-
+//
 //    // Method bắt lỗi từ enum ErrorResponseBase
 //    @ExceptionHandler(value = Exception.class)
 //    public ResponseEntity<ErrorResponseBase> handleException(Exception e, HttpServletRequest request) {

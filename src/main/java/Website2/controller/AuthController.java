@@ -82,7 +82,7 @@ public class AuthController {
             // Tăng số lần đăng nhập sai của người dùng
             loginAttempts++;
             loginAttemptMap.put(username, loginAttempts);
-            if (loginAttempts == 4) {
+            if (loginAttempts == 5) {
                 throw new AppException(ErrorResponseBase.valueOf("số lần đăng nhập còn 1 lần nếu bạn nhập sai lần nữa sẽ bị khóa "));
 
             }

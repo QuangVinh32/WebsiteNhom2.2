@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import java.util.Arrays;
 
 @Configuration
@@ -70,8 +69,13 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/api/register",
                         "/api/login")
                 .permitAll()
+                .antMatchers(HttpMethod.POST,
+                        "/api/v1/cart/add/{productId}",
+                        "/api/v1/cart/remove/{productId}")
+                .permitAll() //
                 .antMatchers(HttpMethod.GET,
                         "/pages/**",
+                        "/api/v1/cart/summary",
                         "/auth/**",
                         "/api/v1/product/find-all-product",
                         "/api/v1/product/find-by-id/{id}",
@@ -86,24 +90,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    // Bean annotation để chỉ ra rằng phương thức này sẽ trả về một đối tượng được quản lý bởi Spring IoC container
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        // Tạo đối tượng CorsConfiguration mới, chứa thông tin cấu hình CORS
         CorsConfiguration configuration = new CorsConfiguration();
-        // Thiết lập danh sách các nguồn (origins) được phép truy cập vào tài nguyên trên server
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3002","http://localhost:3001","http://localhost:3000")); // Chỉ cho phép nguồn từ localhost:3001
-        // Thiết lập các phương thức HTTP (HTTP methods) được phép sử dụng
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH")); // Cho phép các phương thức HTTP này
-        // Cho phép gửi thông tin xác thực (credentials) như cookie, headers authentication
         configuration.setAllowCredentials(true);
-        // Thiết lập các headers nào từ client được phép gửi đến server
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type")); // Chỉ cho phép các headers này
-        // Tạo đối tượng UrlBasedCorsConfigurationSource để đăng ký cấu hình CORS cho các đường dẫn URL cụ thể
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // Đăng ký cấu hình CORS cho tất cả các URL (/**) sử dụng cấu hình đã tạo ở trên
         source.registerCorsConfiguration("/**", configuration);
-        // Trả về đối tượng CorsConfigurationSource đã được cấu hình
         return source;
     }
 

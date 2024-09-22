@@ -1,5 +1,4 @@
 package Website2.service.Class;
-
 import Website2.model.DTO.*;
 import Website2.model.entity.*;
 import Website2.model.request.CreateProduct;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -122,7 +120,7 @@ public class ProductService implements IProductService {
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
 
         // Lấy danh sách Reviews theo productId
-        List<Reviews> reviews = reviewRepository.findByProductId(id);
+        List<Reviews> reviews = reviewRepository.findByProductProductId(id);
 
         // Tạo và trả về ProductDTOv2
         return new ProductForUser(product, reviews);
@@ -155,7 +153,6 @@ public class ProductService implements IProductService {
                 NsxDTO nsxDTO = new NsxDTO(product.getNsx());
                 productDTO.setNsxDTO(nsxDTO);
             }
-
             if (product.getCategory() != null) {
                 CategoryDTO categoryDTO = new CategoryDTO(product.getCategory());
                 productDTO.setCategoryDTO(categoryDTO);

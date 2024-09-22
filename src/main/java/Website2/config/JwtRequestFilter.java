@@ -32,12 +32,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String token = httpServletRequest.getHeader(AUTHORIZATION);
         String request = httpServletRequest.getRequestURI();
 
-
         if (StringUtils.containsAnyIgnoreCase(request, "/api/login")
                 || StringUtils.containsAnyIgnoreCase(request, "/api/register")
                 || StringUtils.containsAnyIgnoreCase(request, "/api/v1/product/find-all-product")
                 || StringUtils.containsAnyIgnoreCase(request, "/api/v1/product/find-all-reviews")
-                || StringUtils.containsAnyIgnoreCase(request, "/api/v1/product/find-by-id")){
+                || StringUtils.containsAnyIgnoreCase(request, "/api/v1/product/find-by-id")
+                || StringUtils.containsIgnoreCase(request, "/api/v1/cart/add")
+                || StringUtils.containsIgnoreCase(request, "/api/v1/cart/remove")
+//                || StringUtils.containsIgnoreCase(request, "/api/v1/cart/summary")
+        ){
 
             // Những api public ko cần check token -> doFilter
             filterChain.doFilter(httpServletRequest, httpServletResponse);

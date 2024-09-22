@@ -75,7 +75,7 @@ public class UserService implements IUserService, UserDetailsService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public void CreateUser(@NotNull UserRequest userRequest) {
+    public void CreateUser( UserRequest userRequest) {
         if (userRepository.existsByEmail(userRequest.getEmail())) {
             throw new AppException(ErrorResponseBase.DOUBLE_EMAIL_EX);
         }

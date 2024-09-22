@@ -1,6 +1,9 @@
 package Website2.model.entity;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -23,19 +26,14 @@ public class Reviews {
     @CreationTimestamp
     private LocalDateTime createTimeReview;
 
-    @Column(name = "userId")
-    private Integer userId;
 
-
-    @Column(name = "productId")
-    private Integer productId;
     @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "userId", insertable = false, updatable = false)
+    @JsonManagedReference
+    @JoinColumn(name = "userId", nullable = false)
     private Users user;
 
     @ManyToOne
-    @JoinColumn(name = "productId", referencedColumnName = "productId", insertable = false, updatable = false)
+    @JoinColumn(name = "productId", referencedColumnName = "productId", nullable = false)
     private Product product;
-
 
 }

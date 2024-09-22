@@ -1,16 +1,20 @@
 package Website2.controller;
+import Website2.model.DTO.UserForAdmin;
 import Website2.model.entity.Users;
 import Website2.model.request.UserRequest;
 import Website2.service.Class.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CrossOrigin("*")
 @Validated
@@ -19,11 +23,19 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     UserService userService;
+    @Autowired
+    private ModelMapper mapper;
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<Users>> getAllUser() {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUser());
+    public ResponseEntity<List<UserForAdmin>> getAllUser() {
+        List<Users> users = userService.getAllUser(); // Lấy danh sách User từ service
+        List<UserForAdmin> userDTOs = users.stream()
+                .map(user -> mapper.map(user, UserForAdmin.class)) // Sử dụng ModelMapper để chuyển đổi từng User thành UserForAdmin
+                .collect(Collectors.toList()); // Thu thập kết quả vào danh sách
+
+        return ResponseEntity.status(HttpStatus.OK).body(userDTOs);
     }
+
 
     @GetMapping("/{userId}")
     public ResponseEntity<?> getUserDetails(@PathVariable Integer userId) {

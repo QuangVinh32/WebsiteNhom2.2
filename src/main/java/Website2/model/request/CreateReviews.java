@@ -9,6 +9,5 @@ public class CreateReviews {
     private String content;
     private int rate;
     private LocalDateTime createTimeReview;
-    private int userId;
     private int productId;
 }

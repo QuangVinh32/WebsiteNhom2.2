@@ -28,6 +28,29 @@ public class CartController {
     @Autowired
     private ICartService cartService;
 
+
+    @PostMapping("/add/{productId}")
+    public ResponseEntity<?> addProductToCart(@PathVariable Integer productId) {
+        cartService.addProductToCart(productId);
+        return ResponseEntity.ok("Product added to cart");
+    }
+
+
+
+    @DeleteMapping("/remove/{productId}")
+    public ResponseEntity<String> removeProductFromCart(@PathVariable Integer productId) {
+        try {
+            cartService.removeProductFromCart(productId);
+            return ResponseEntity.ok("Xóa sản phẩm khỏi giỏ hàng thành công.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("/summary")
+    public CartSummaryDTO getCartSummary() {
+        return cartService.getCartSummary();
+    }
+
     @GetMapping("/find-all-cart")
     List<CartDTO> findAll() {
         List<Cart> carts = cartService.findAll();
@@ -70,26 +93,6 @@ public class CartController {
 //        return cartDetails;
 //    }
 
-    @PostMapping("/add/{productId}")
-    public ResponseEntity<?> addProductToCart(@PathVariable Integer productId) {
-        cartService.addProductToCart(productId);
-        return ResponseEntity.ok("Product added to cart");
-    }
 
-
-
-    @DeleteMapping("/remove/{productId}")
-    public ResponseEntity<String> removeProductFromCart(@PathVariable Integer productId) {
-        try {
-            cartService.removeProductFromCart(productId);
-            return ResponseEntity.ok("Xóa sản phẩm khỏi giỏ hàng thành công.");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-    @GetMapping("/summary")
-    public CartSummaryDTO getCartSummary() {
-        return cartService.getCartSummary();
-    }
 
 }

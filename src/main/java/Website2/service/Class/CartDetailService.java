@@ -30,7 +30,6 @@ public class CartDetailService implements ICartDetailService {
     @Autowired
     private ProductRepository productRepository;
 
-
     @Override
     public List<CartDetail> findAllCarDetail() {
         return cartDetailRepository.findAll();
@@ -48,6 +47,44 @@ public class CartDetailService implements ICartDetailService {
     public void createCartDetail(CreateCartDetail createCartDetail) {
 
     }
+
+    @Override
+    public CartDetail updateCartDetail(UpdateCartDetail updateCartDetail) {
+        CartDetail cartDetail = cartDetailRepository.findById(updateCartDetail.getCartDetailPK())
+                .orElseThrow(() -> new EntityNotFoundException("Không thấy id"));
+        cartDetail.setCount(updateCartDetail.getCount());
+        return cartDetailRepository.save(cartDetail);
+    }
+    @Override
+    public void deleteCartDetail(PkCartDetail pkCartDetail) {
+        CartDetailPK cartDetailPK = pkCartDetail.getCartDetailPK();
+        CartDetail cartDetail = cartDetailRepository.findById(cartDetailPK)
+                .orElseThrow(() -> new EntityNotFoundException("Không thấy id"));
+        cartDetailRepository.delete(cartDetail);
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //    @Override
 //    public void createCartDetail(CreateCartDetail createCartDetail) {
@@ -71,22 +108,3 @@ public class CartDetailService implements ICartDetailService {
 //        //
 //        cartDetailRepository.save(cartDetail);
 //    }
-
-    @Override
-    public CartDetail updateCartDetail(UpdateCartDetail updateCartDetail) {
-        CartDetail cartDetail = cartDetailRepository.findById(updateCartDetail.getCartDetailPK())
-                .orElseThrow(() -> new EntityNotFoundException("Không thấy id"));
-        cartDetail.setCount(updateCartDetail.getCount());
-        return cartDetailRepository.save(cartDetail);
-    }
-    @Override
-    public void deleteCartDetail(PkCartDetail pkCartDetail) {
-        CartDetailPK cartDetailPK = pkCartDetail.getCartDetailPK();
-        CartDetail cartDetail = cartDetailRepository.findById(cartDetailPK)
-                .orElseThrow(() -> new EntityNotFoundException("Không thấy id"));
-        cartDetailRepository.delete(cartDetail);
-    }
-
-
-
-}

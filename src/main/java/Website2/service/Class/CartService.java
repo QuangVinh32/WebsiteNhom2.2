@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,8 @@ import java.util.stream.Collectors;
 public class CartService implements ICartService {
     @Autowired
     private ModelMapper mapper;
+    @Autowired
+    private HttpSession session;
     @Autowired
     private CartRepository cartRepository;
     @Autowired
@@ -89,39 +92,38 @@ public class CartService implements ICartService {
 //    }
 
 
+
     public void addProductToCart(Integer productId) {
-        // Lấy thông tin người dùng hiện tại từ SecurityContext
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        Users user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        Users user = null;
+        Cart cart = null;
 
-        // Kiểm tra xem người dùng đã có Cart hay chưa
-        Cart cart = cartRepository.findByUsers(user).orElse(null);
+        if (username != null && !username.equalsIgnoreCase("anonymousUser")) {
+            user = userRepository.findByUsername(username).orElse(null);
 
-        if (cart == null) {
-            // Nếu chưa có, tạo mới Cart
-            cart = new Cart();
-            cart.setTotal(0); // Khởi tạo tổng tiền là 0
-            cart.setUsers(user);
-            cart = cartRepository.save(cart); // Lưu Cart mới
+            cart = cartRepository.findByUsers(user).orElse(null);
+        } else {
+            cart = (Cart) session.getAttribute("cart");
+
+            if (cart == null) {
+                cart = new Cart();
+                cart.setTotal(0);
+                session.setAttribute("cart", cart); // Lưu giỏ hàng vào session
+            }
         }
 
-        // Tìm Product theo productId
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        // Tạo CartDetailPK và tìm CartDetail hiện tại
         CartDetailPK cartDetailPK = new CartDetailPK(cart, product);
         Optional<CartDetail> existingCartDetail = cartDetailRepository.findById(cartDetailPK);
 
         if (existingCartDetail.isPresent()) {
-            // Tăng số lượng sản phẩm nếu đã có trong CartDetail
             CartDetail cartDetail = existingCartDetail.get();
             cartDetail.setCount(cartDetail.getCount() + 1);
             cartDetailRepository.save(cartDetail);
         } else {
-            // Thêm mới sản phẩm vào CartDetail nếu chưa có
             CartDetail newCartDetail = new CartDetail();
             newCartDetail.setCartDetailPK(cartDetailPK);
             newCartDetail.setCount(1);
@@ -130,7 +132,6 @@ public class CartService implements ICartService {
             cartDetailRepository.save(newCartDetail);
         }
 
-        // Cập nhật tổng tiền của giỏ hàng
         updateCartTotal(cart);
     }
 
@@ -138,9 +139,14 @@ public class CartService implements ICartService {
         // Lấy thông tin người dùng hiện tại từ SecurityContext
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        // Fetch the user by username
-        Users user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+//        // Fetch the user by username
+//        Users user = userRepository.findByUsername(username)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Users user = null;
+        if (username != null) {
+            user = userRepository.findByUsername(username).orElse(null);
+        }
 
         // Fetch the cart for the user
         Cart cart = cartRepository.findByUsers(user)

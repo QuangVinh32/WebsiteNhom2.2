@@ -12,17 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
-
 @Service
 public class OrderService implements IOrderService {
     @Autowired
@@ -60,6 +53,133 @@ public class OrderService implements IOrderService {
         return new OrderDTO(order, orderDetails);
     }
 
+    @Transactional
+    public void createOrder(CreateOrder createOrderDTO) {
+        // Lấy thông tin người dùng hiện tại từ SecurityContext
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Users user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Kiểm tra xem người dùng đã có Cart hay chưa
+        Cart cart = cartRepository.findByUsers(user).orElse(null);
+
+        if (cart == null || cart.getCartDetails().isEmpty()) {
+            throw new IllegalArgumentException("Giỏ hàng trống");
+        }
+
+        // Tạo đối tượng Order
+        Order order = new Order();
+        order.setFullName(createOrderDTO.getFullName());
+        order.setAddress(createOrderDTO.getAddress());
+        order.setPhone(createOrderDTO.getPhone());
+        order.setTotal(cart.getTotal());
+        order.setOrderDate(new Date());
+        order.setStatus(OrderStatus.PENDING);
+        order.setUser(user);
+
+        orderRepository.save(order);
+
+        // Tạo chi tiết đơn hàng từ chi tiết giỏ hàng
+        for (CartDetail cartDetail : cart.getCartDetails()) {
+
+            Product product = cartDetail.getProduct();
+
+            // Kiểm tra xem sản phẩm có đủ số lượng hay không
+            if (product.getSoLuongTonKho() < cartDetail.getCount()) {
+                throw new IllegalArgumentException("Không đủ số lượng sản phẩm: " + product.getProductName());
+            }
+
+            // Trừ số lượng sản phẩm
+            product.setSoLuongTonKho(product.getSoLuongTonKho() - cartDetail.getCount());
+            productRepository.save(product);
+
+            // Tạo đối tượng OrderDetail
+            OrderDetailPK orderDetailPK = new OrderDetailPK(order, cartDetail.getProduct());
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setOrderDetailPK(orderDetailPK);
+            orderDetail.setCount(cartDetail.getCount());
+
+            orderDetailRepository.save(orderDetail);
+        }
+
+        // Xóa giỏ hàng sau khi tạo đơn hàng
+        cartDetailRepository.deleteAll(cart.getCartDetails());
+        cartRepository.delete(cart);
+    }
+
+    @Override
+    @Transactional
+    public Order updateOrder(int orderID, UpdateOrder updateOrder) throws Exception {
+        // Tìm đơn hàng theo ID
+        Optional<Order> optionalOrder = orderRepository.findById(orderID);
+        if (!optionalOrder.isPresent()) {
+            throw new Exception("Order not found");
+        }
+
+        // Lấy đối tượng đơn hàng hiện tại
+        Order order = optionalOrder.get();
+
+        // Nếu trạng thái đơn hàng thay đổi thành FAILED, trả lại số lượng sản phẩm vào kho
+        if (updateOrder.getStatus() == OrderStatus.FAILED && order.getStatus() != OrderStatus.FAILED) {
+            for (OrderDetail orderDetail : order.getOrderDetails()) {
+                Product product = orderDetail.getProduct();  // Corrected way to access the Product entity
+                product.setSoLuongTonKho(product.getSoLuongTonKho() + orderDetail.getCount());
+                productRepository.save(product);
+            }
+        }
+
+        // Cập nhật các trường với dữ liệu từ UpdateOrder
+        order.setTotal(updateOrder.getTotal());
+        order.setFullName(updateOrder.getFullName());
+        order.setAddress(updateOrder.getAddress());
+        order.setPhone(updateOrder.getPhone());
+        order.setOrderDate(updateOrder.getOrderDate());
+        order.setSaleDate(updateOrder.getSaleDate());
+        order.setStatus(updateOrder.getStatus());
+        order.setNote(updateOrder.getNote());
+
+        // Lưu đơn hàng đã cập nhật vào cơ sở dữ liệu
+        return orderRepository.save(order);
+    }
+
+    @Override
+    public void deleteOrder(int id) {
+        orderRepository.deleteById(id);
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //    @Override
 //    public void createOrder(CreateOrder createOrder) throws Exception {
@@ -87,91 +207,3 @@ public class OrderService implements IOrderService {
 //        //  select * from cartDetail where cart_id = ? and product_id in (1,2)
 //        // delete ls
 //    }
-
-
-    @Transactional
-    public void createOrder(CreateOrder createOrderDTO) {
-        // Lấy thông tin người dùng hiện tại từ SecurityContext
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        Users user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        // Kiểm tra xem người dùng đã có Cart hay chưa
-        Cart cart = cartRepository.findByUsers(user).orElse(null);
-
-        if (cart == null || cart.getCartDetails().isEmpty()) {
-            throw new IllegalArgumentException("Giỏ hàng trống");
-        }
-
-        // Tạo đối tượng Order
-        Order order = new Order();
-        order.setFullName(createOrderDTO.getFullName());
-        order.setAddress(createOrderDTO.getAddress());
-        order.setPhone(createOrderDTO.getPhone());
-        order.setTotal(cart.getTotal());
-        order.setOrderDate(new Date());
-        order.setStatus(OrderStatus.Ordered);  // Đặt trạng thái mặc định cho đơn hàng
-
-        orderRepository.save(order);
-
-        // Tạo chi tiết đơn hàng từ chi tiết giỏ hàng
-        for (CartDetail cartDetail : cart.getCartDetails()) {
-            OrderDetailPK orderDetailPK = new OrderDetailPK(order, cartDetail.getProduct());
-            OrderDetail orderDetail = new OrderDetail();
-            orderDetail.setOrderDetailPK(orderDetailPK);
-            orderDetail.setCount(cartDetail.getCount());
-
-            orderDetailRepository.save(orderDetail);
-        }
-
-        // Xóa giỏ hàng sau khi tạo đơn hàng
-        cartDetailRepository.deleteAll(cart.getCartDetails());
-        cartRepository.delete(cart);
-    }
-
-
-
-
-
-
-
-
-
-
-    @Override
-    public Order updateOrder(int orderID, UpdateOrder updateOrder) throws Exception {
-        // Tìm đơn hàng theo ID
-        Optional<Order> optionalOrder = orderRepository.findById(orderID);
-        if (!optionalOrder.isPresent()) {
-            throw new Exception("Order not found");
-        }
-
-        // Lấy đối tượng đơn hàng hiện tại
-        Order order = optionalOrder.get();
-
-        // Cập nhật các trường với dữ liệu từ UpdateOrder
-        order.setTotal(updateOrder.getTotal());
-        order.setFullName(updateOrder.getFullName());
-        order.setAddress(updateOrder.getAddress());
-        order.setPhone(updateOrder.getPhone());
-        order.setOrderDate(updateOrder.getOrderDate());
-        order.setSaleDate(updateOrder.getSaleDate());
-        order.setStatus(updateOrder.getStatus());
-        order.setNote(updateOrder.getNote());
-
-        // Lưu đơn hàng đã cập nhật vào cơ sở dữ liệu
-        return orderRepository.save(order);
-    }
-
-
-
-    @Override
-    public void deleteOrder(int id) {
-        orderRepository.deleteById(id);
-    }
-
-
-
-
-}
