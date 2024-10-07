@@ -74,25 +74,6 @@ public class CartService implements ICartService {
 
     }
 
-//    @Override
-//    public List<Cart> getCartForUser(String username) {
-//        Optional<Users> users = userRepository.findByUsername(username);
-//        return cartRepository.findAllByUsers(users.get());
-//    }
-//
-//    @Override
-//    public List<CartDetail> getCartDetailsForUser(String username) {
-//        List<Cart> carts = getCartForUser(username);
-//        List<CartDetail> cartDetails = new ArrayList<>();
-//        for (Cart cart1: carts){
-//            List<CartDetail> details = cartDetailRepository.findAllByCart(cart1);
-//            cartDetails.addAll(details);
-//        }
-//        return cartDetails;
-//    }
-
-
-
     public void addProductToCart(Integer productId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -101,15 +82,13 @@ public class CartService implements ICartService {
 
         if (username != null && !username.equalsIgnoreCase("anonymousUser")) {
             user = userRepository.findByUsername(username).orElse(null);
-
             cart = cartRepository.findByUsers(user).orElse(null);
         } else {
             cart = (Cart) session.getAttribute("cart");
-
             if (cart == null) {
                 cart = new Cart();
                 cart.setTotal(0);
-                session.setAttribute("cart", cart); // Lưu giỏ hàng vào session
+                session.setAttribute("cart", cart);
             }
         }
 
@@ -131,31 +110,25 @@ public class CartService implements ICartService {
             newCartDetail.setProduct(product);
             cartDetailRepository.save(newCartDetail);
         }
-
         updateCartTotal(cart);
     }
 
     public void removeProductFromCart(Integer productId) {
         // Lấy thông tin người dùng hiện tại từ SecurityContext
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
 //        // Fetch the user by username
 //        Users user = userRepository.findByUsername(username)
 //                .orElseThrow(() -> new RuntimeException("User not found"));
-
         Users user = null;
         if (username != null) {
             user = userRepository.findByUsername(username).orElse(null);
         }
-
         // Fetch the cart for the user
         Cart cart = cartRepository.findByUsers(user)
                 .orElseThrow(() -> new RuntimeException("Cart not found for user"));
-
         // Find the product by productId
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
-
         // Create CartDetailPK and find the current CartDetail
         CartDetailPK cartDetailPK = new CartDetailPK(cart, product);
         Optional<CartDetail> existingCartDetail = cartDetailRepository.findById(cartDetailPK);
@@ -165,21 +138,16 @@ public class CartService implements ICartService {
             int newCount = cartDetail.getCount() - 1;
 
             if (newCount > 0) {
-                // Update quantity and save
                 cartDetail.setCount(newCount);
                 cartDetailRepository.save(cartDetail);
             } else {
-                // Delete CartDetail if quantity is 0
                 cartDetailRepository.delete(cartDetail);
             }
 
-            // Check if the cart is empty
             List<CartDetail> remainingCartDetails = cartDetailRepository.findByCart(cart);
             if (remainingCartDetails.isEmpty()) {
-                // If the cart has no remaining products, delete the cart
                 cartRepository.delete(cart);
             } else {
-                // Update the total of the cart
                 updateCartTotal(cart);
             }
         } else {
@@ -253,6 +221,23 @@ public class CartService implements ICartService {
 
         return cartSummaryDTO;
     }
+    //    @Override
+//    public List<Cart> getCartForUser(String username) {
+//        Optional<Users> users = userRepository.findByUsername(username);
+//        return cartRepository.findAllByUsers(users.get());
+//    }
+//
+//    @Override
+//    public List<CartDetail> getCartDetailsForUser(String username) {
+//        List<Cart> carts = getCartForUser(username);
+//        List<CartDetail> cartDetails = new ArrayList<>();
+//        for (Cart cart1: carts){
+//            List<CartDetail> details = cartDetailRepository.findAllByCart(cart1);
+//            cartDetails.addAll(details);
+//        }
+//        return cartDetails;
+//    }
+
 
 
 
